@@ -14,6 +14,8 @@ public class InMemoryRepository<T extends Identifiable> implements RepositoryInt
 
     @Override
     public void save(T entity) {
+
+        entity.setId(String.valueOf(idGenerator.getAndIncrement()));
         entities.add(entity);
     }
 

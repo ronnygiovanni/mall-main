@@ -17,16 +17,21 @@
     <tr th:each="staff : ${staffList}">
         <td th:text="${staff.id}"></td>
         <td th:text="${staff.name}"></td>
-        <td th:text="${staff.getClass().getSimpleName()}"></td>
+        <td>
+            <span th:if="${staff instanceof T(com.example.MallManagement.model.SecurityStaff)}">Security Staff</span>
+            <span th:if="${staff instanceof T(com.example.MallManagement.model.MaintenanceStaff)}">Maintenance Staff</span>
+        </td>
         <td>
             <span th:if="${staff instanceof T(com.example.MallManagement.model.SecurityStaff)}"
-                  th:text="${((T(com.example.MallManagement.model.SecurityStaff))staff).badgeNo}"></span>
+                  th:text="${staff.badgeNo}"></span>
             <span th:if="${staff instanceof T(com.example.MallManagement.model.MaintenanceStaff)}"
-                  th:text="${#lists.size(((T(com.example.MallManagement.model.MaintenanceStaff))staff).assignments)} + ' assignments'"></span>
+                  th:text="${#lists.size(staff.assignments)} + ' assignments'"></span>
         </td>
         <td th:text="${staff.salary}"></td>
         <td>
             <form th:action="@{'/staff/' + ${staff.id} + '/delete'}" method="post">
+                <input type="hidden" name="staffType"
+                       th:value="${staff instanceof T(com.example.MallManagement.model.SecurityStaff)} ? 'Security' : 'Maintenance'" />
                 <button type="submit">Delete Staff</button>
             </form>
         </td>

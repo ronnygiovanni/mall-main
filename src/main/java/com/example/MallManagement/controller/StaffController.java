@@ -40,13 +40,17 @@ public class StaffController {
     }
 
     @PostMapping
-    public String createStaff(@ModelAttribute Staff staff,
+    public String createStaff(@RequestParam String name,
+                              @RequestParam int salary,
                               @RequestParam String staffType) {
+
         if ("Maintenance".equals(staffType)) {
-            MaintenanceStaff mStaff = new MaintenanceStaff(staff.getId(), staff.getName(), MaintenanceStaff.Type.Electrical, staff.getSalary());
+            // Create a concrete MaintenanceStaff object
+            MaintenanceStaff mStaff = new MaintenanceStaff(null, name, MaintenanceStaff.Type.Electrical, salary);
             maintenanceService.add(mStaff);
         } else {
-            SecurityStaff sStaff = new SecurityStaff(staff.getId(), staff.getName(), "", staff.getSalary());
+            // Create a concrete SecurityStaff object (badgeNo is blank for now)
+            SecurityStaff sStaff = new SecurityStaff(null, name, "", salary);
             securityService.add(sStaff);
         }
         return "redirect:/staff";
