@@ -1,0 +1,33 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mall Management System</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        h1 { color: #333; }
+        ul { list-style: none; padding-left: 0; }
+        li { margin-bottom: 10px; }
+        a {
+            text-decoration: none;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<h1>Welcome to the Mall Management System</h1>
+<p>Please select a module to manage:</p>
+
+<ul>
+    <li><a th:href="@{/malls}">Manage Malls</a></li>
+    <li><a th:href="@{/floors}">Manage Floors</a></li>
+    <li><a th:href="@{/shops}">Manage Shops</a></li>
+    <li><a th:href="@{/customers}">Manage Customers</a></li>
+    <li><a th:href="@{/purchases}">Manage Purchases</a></li>
+    <li><a th:href="@{/staff}">Manage Staff</a></li>
+    <li><a th:href="@{/maintenance}">Manage Maintenance Tasks</a></li>
+    <li><a th:href="@{/assets}">Manage Electrical Assets</a></li>
+    <li><hr><a th:href="@{/hello}">Test Endpoint (/hello)</a></li>
+</ul>
+</body>
+</html>
