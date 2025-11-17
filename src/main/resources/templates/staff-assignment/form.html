@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>New Staff Assignment</title>
+    <style>
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+<h1>New Staff Assignment</h1>
+
+<div th:if="${param.error}" class="error">
+    Error: The Staff ID you entered does not exist! Please check the Staff list.
+</div>
+<form th:action="@{/staff-assignments}" th:object="${assignment}" method="post">
+
+    <label>Staff ID:</label>
+    <input type="text" th:field="*{staffId}" placeholder="Enter existing Staff ID" required/><br>
+
+    <label>Floor ID:</label>
+    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required/><br>
+
+    <label>Shift:</label>
+    <select th:field="*{shift}">
+        <option th:each="shiftOpt : ${shifts}"
+                th:value="${shiftOpt}"
+                th:text="${shiftOpt}"></option>
+    </select><br>
+
+    <button type="submit">Save Assignment</button>
+</form>
+</body>
+</html>
