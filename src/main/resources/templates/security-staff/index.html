@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Security Staff</title>
+</head>
+<body>
+<h1>Security Staff List</h1>
+<a href="/security-staff/new">Add New Security Officer</a>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Badge Number</th>
+        <th>Salary</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="staff : ${staffList}">
+        <td th:text="${staff.id}"></td>
+        <td th:text="${staff.name}"></td>
+        <td th:text="${staff.badgeNo}"></td>
+        <td th:text="${staff.salary}"></td>
+        <td>
+            <form th:action="@{'/security-staff/' + ${staff.id} + '/delete'}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<a href="/">Back to Menu</a>
+</body>
+</html>

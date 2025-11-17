@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Maintenance Staff</title>
+</head>
+<body>
+<h1>Add Maintenance Staff</h1>
+<form th:action="@{/maintenance-staff}" th:object="${staff}" method="post">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" /><br>
+
+    <label>Salary:</label>
+    <input type="number" th:field="*{salary}" /><br>
+
+    <label>Specialization Type:</label>
+    <select th:field="*{type}">
+        <option value="Electrical">Electrical</option>
+        <option value="Cleaning">Cleaning</option>
+    </select><br>
+
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>

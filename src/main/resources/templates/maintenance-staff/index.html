@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Maintenance Staff</title>
+</head>
+<body>
+<h1>Maintenance Staff List</h1>
+<a href="/maintenance-staff/new">Add New Maintenance Worker</a>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Assignment Count</th>
+        <th>Salary</th>
+        <th>Actions</th>
+    </tr>
+    <tr th:each="staff : ${staffList}">
+        <td th:text="${staff.id}"></td>
+        <td th:text="${staff.name}"></td>
+        <td th:text="${staff.type}"></td>
+        <td th:text="${#lists.size(staff.assignments)}"></td>
+        <td th:text="${staff.salary}"></td>
+        <td>
+            <form th:action="@{'/maintenance-staff/' + ${staff.id} + '/delete'}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<a href="/">Back to Menu</a>
+</body>
+</html>
