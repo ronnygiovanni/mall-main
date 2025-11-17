@@ -1,23 +1,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Add Maintenance Staff</title>
-</head>
+<head><title>Maintenance Staff Form</title></head>
 <body>
-<h1>Add Maintenance Staff</h1>
+<h1 th:text="${staff.id == null} ? 'Add Maintenance Staff' : 'Edit Staff'">Add Staff</h1>
 <form th:action="@{/maintenance-staff}" th:object="${staff}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
     <label>Name:</label>
-    <input type="text" th:field="*{name}" /><br>
+    <input type="text" th:field="*{name}" required /><br>
 
     <label>Salary:</label>
     <input type="number" th:field="*{salary}" /><br>
 
-    <label>Specialization Type:</label>
+    <label>Specialization:</label>
     <select th:field="*{type}">
         <option value="Electrical">Electrical</option>
         <option value="Cleaning">Cleaning</option>
     </select><br>
 
-    <button type="submit">Save</button>
+    <button type="submit">Save Staff</button>
 </form>
+<br/>
+<a href="/maintenance-staff">Back to List</a>
 </body>
 </html>

@@ -1,0 +1,12 @@
+[
+  {"id":"501","name":"Officer John","salary":3000,"badgeNo":"SEC001"},
+  {"id":"502","name":"Officer Jane","salary":3200,"badgeNo":"SEC002"},
+  {"id":"503","name":"Officer Mike","salary":2900,"badgeNo":"SEC003"},
+  {"id":"504","name":"Officer Sarah","salary":3100,"badgeNo":"SEC004"},
+  {"id":"505","name":"Officer Tom","salary":3050,"badgeNo":"SEC005"},
+  {"id":"506","name":"Officer Emily","salary":3300,"badgeNo":"SEC006"},
+  {"id":"507","name":"Officer Chris","salary":2950,"badgeNo":"SEC007"},
+  {"id":"508","name":"Officer Anna","salary":3150,"badgeNo":"SEC008"},
+  {"id":"509","name":"Officer David","salary":3000,"badgeNo":"SEC009"},
+  {"id":"510","name":"Officer Lisa","salary":3250,"badgeNo":"SEC010"}
+]

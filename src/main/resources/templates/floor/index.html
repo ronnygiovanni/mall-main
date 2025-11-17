@@ -4,32 +4,28 @@
 </head>
 <body>
 <h1>All Floors</h1>
-
-<a href="/malls">Back to Malls</a>
-
+<a href="/floors/new">Add New Floor</a>
 <table border="1">
     <tr>
         <th>ID</th>
-        <th>Number</th>
-        <th>Shops</th>
-        <th>Maintenance Tasks</th>
-        <th>Electrical Assets</th>
-        <th>Staff Assignments</th>
+        <th>Floor Number</th>
+        <th>Mall Name</th>
         <th>Actions</th>
     </tr>
     <tr th:each="floor : ${floors}">
         <td th:text="${floor.id}"></td>
         <td th:text="${floor.number}"></td>
-        <td th:text="${#lists.size(floor.shops)}"></td>
-        <td th:text="${#lists.size(floor.tasks)}"></td>
-        <td th:text="${#lists.size(floor.electricals)}"></td>
-        <td th:text="${#lists.size(floor.assignments)}"></td>
+        <td th:text="${mallNames[floor.mallId]} ?: 'Unknown'"></td>
         <td>
-            <form th:action="@{'/floors/' + ${floor.id} + '/delete'}" method="post">
+            <a th:href="@{'/floors/' + ${floor.id}}">Details</a> |
+            <a th:href="@{'/floors/' + ${floor.id} + '/edit'}">Edit</a> |
+            <form th:action="@{'/floors/' + ${floor.id} + '/delete'}" method="post" style="display:inline">
                 <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
 </table>
+<br/>
+<a href="/">Back to Menu</a>
 </body>
 </html>

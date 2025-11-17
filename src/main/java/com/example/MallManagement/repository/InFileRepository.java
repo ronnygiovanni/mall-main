@@ -17,56 +17,67 @@ public abstract class InFileRepository<T extends Identifiable> implements Reposi
     private final Class<T> type;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private List<T> data = new ArrayList<>();
+    private long nextId = 1;
 
     public InFileRepository(String filePath, Class<T> type) {
         this.filePath = filePath;
         this.type = type;
         loadData();
+        // Initialize nextId based on the highest existing ID
+        this.nextId = data.stream()
+                .map(Identifiable::getId)
+                .filter(id -> id.matches("\\d+")) // Filter for numeric IDs
+                .mapToLong(Long::parseLong)
+                .max()
+                .orElse(0L) + 1;
     }
 
     private void loadData() {
         try {
             File file = ResourceUtils.getFile("classpath:data/" + filePath);
-            if (file.exists()) {
+            if (file.exists() && file.length() > 0) {
                 CollectionType listType = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, type);
                 data = objectMapper.readValue(file, listType);
             }
-        } catch (IOException e) {
-            System.out.println("Could not load data from " + filePath + ": " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Data file " + filePath + " not found or empty. Starting new.");
             data = new ArrayList<>();
         }
     }
 
-    private void saveData() {
+    private synchronized void saveData() {
         try {
             File file = ResourceUtils.getFile("classpath:data/" + filePath);
-            objectMapper.writeValue(file, data);
+            // Ensure directory exists
+            if (!file.getParentFile().exists()) {
+                file.getParentFile().mkdirs();
+            }
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, data);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving data to " + filePath + ": " + e.getMessage());
         }
     }
 
     @Override
     public void save(T entity) {
-        // Update if exists, otherwise add
-        Optional<T> existing = data.stream().filter(e -> e.getId().equals(entity.getId())).findFirst();
+        Optional<T> existing = data.stream()
+                .filter(e -> e.getId() != null && e.getId().equals(entity.getId()))
+                .findFirst();
+
         if (existing.isPresent()) {
             int index = data.indexOf(existing.get());
             data.set(index, entity);
         } else {
-            // Simple ID generation if missing
             if (entity.getId() == null || entity.getId().isEmpty()) {
-                entity.setId(String.valueOf(System.currentTimeMillis()));
+                entity.setId(String.valueOf(nextId++));
             }
             data.add(entity);
         }
-        saveData(); // Auto-save to JSON [cite: 53]
+        saveData();
     }
 
     @Override
-    public List<T> findAll() {
-        return data;
-    }
+    public List<T> findAll() { return data; }
 
     @Override
     public T findById(String id) {
@@ -76,6 +87,6 @@ public abstract class InFileRepository<T extends Identifiable> implements Reposi
     @Override
     public void delete(String id) {
         data.removeIf(e -> e.getId().equals(id));
-        saveData(); // Auto-save to JSON [cite: 53]
+        saveData();
     }
 }

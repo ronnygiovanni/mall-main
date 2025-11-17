@@ -1,0 +1,12 @@
+[
+  {"id":"701","floorId":"101","staffId":"501","shift":"Morning"},
+  {"id":"702","floorId":"101","staffId":"601","shift":"Evening"},
+  {"id":"703","floorId":"102","staffId":"502","shift":"Night"},
+  {"id":"704","floorId":"102","staffId":"602","shift":"Morning"},
+  {"id":"705","floorId":"103","staffId":"503","shift":"Evening"},
+  {"id":"706","floorId":"103","staffId":"603","shift":"Night"},
+  {"id":"707","floorId":"104","staffId":"504","shift":"Morning"},
+  {"id":"708","floorId":"104","staffId":"604","shift":"Evening"},
+  {"id":"709","floorId":"105","staffId":"505","shift":"Night"},
+  {"id":"710","floorId":"105","staffId":"605","shift":"Morning"}
+]

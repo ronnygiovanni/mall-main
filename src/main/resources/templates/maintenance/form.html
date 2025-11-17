@@ -1,23 +1,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Plan Task</title>
-</head>
 <body>
 <h1>Plan Maintenance Task</h1>
 <form th:action="@{/maintenance}" th:object="${task}" method="post">
-    <label>Description:</label>
-    <input type="text" th:field="*{description}" /><br>
+    <label>Description:</label><input type="text" th:field="*{description}" /><br>
+    <label>Status:</label><input type="text" th:field="*{status}" /><br>
+    <label>Duration:</label><input type="number" th:field="*{duration}" /><br>
 
-    <label>Status:</label>
-    <input type="text" th:field="*{status}" /><br>
+    <label>Floor:</label>
+    <select th:field="*{floorId}">
+        <option value="">-- Select Floor --</option>
+        <option th:each="f : ${floors}" th:value="${f.id}" th:text="'Floor ' + ${f.number}"></option>
+    </select><br>
 
-    <label>Assignment ID:</label>
-    <input type="text" th:field="*{assignmentId}" /><br>
-
-    <label>Duration:</label>
-    <input type="number" th:field="*{duration}" /><br>
-
-    <button type="submit">Save Task</button>
+    <label>Assignment:</label>
+    <select th:field="*{assignmentId}">
+        <option value="">-- Select Assignment --</option>
+        <option th:each="a : ${assignments}" th:value="${a.id}" th:text="'Assign: ' + ${a.id}"></option>
+    </select><br>
+    <button type="submit">Save</button>
 </form>
 </body>
 </html>

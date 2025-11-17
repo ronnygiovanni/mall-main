@@ -1,16 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Maintenance Staff</title>
-</head>
+<head><title>Maintenance Staff</title></head>
 <body>
-<h1>Maintenance Staff List</h1>
-<a href="/maintenance-staff/new">Add New Maintenance Worker</a>
+<h1>Maintenance Staff</h1>
+<a href="/maintenance-staff/new">Add New Maintenance Staff</a>
 <table border="1">
     <tr>
         <th>ID</th>
         <th>Name</th>
         <th>Type</th>
-        <th>Assignment Count</th>
         <th>Salary</th>
         <th>Actions</th>
     </tr>
@@ -18,15 +15,17 @@
         <td th:text="${staff.id}"></td>
         <td th:text="${staff.name}"></td>
         <td th:text="${staff.type}"></td>
-        <td th:text="${#lists.size(staff.assignments)}"></td>
         <td th:text="${staff.salary}"></td>
         <td>
-            <form th:action="@{'/maintenance-staff/' + ${staff.id} + '/delete'}" method="post">
+            <a th:href="@{'/maintenance-staff/' + ${staff.id}}">Details</a> |
+            <a th:href="@{'/maintenance-staff/' + ${staff.id} + '/edit'}">Edit</a> |
+            <form th:action="@{'/maintenance-staff/' + ${staff.id} + '/delete'}" method="post" style="display:inline">
                 <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
 </table>
+<br/>
 <a href="/">Back to Menu</a>
 </body>
 </html>

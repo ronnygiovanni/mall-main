@@ -6,8 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomerService extends com.example.MallManagement.service.Service<Customer> {
-
-    public CustomerService(CustomerRepository customerRepo) {
-        super(customerRepo);
+    public CustomerService(CustomerRepository repo) {
+        super(repo);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/security-staff") // Unique URL for security staff
+@RequestMapping("/security-staff")
 public class SecurityStaffController {
 
     private final SecurityStaffService service;
@@ -23,15 +23,25 @@ public class SecurityStaffController {
     }
 
     @GetMapping("/new")
-    public String showForm(Model model) {
-        // Create a new SecurityStaff with empty values
-        model.addAttribute("staff", new SecurityStaff(null, "", "", 0));
+    public String createForm(Model model) {
+        model.addAttribute("staff", new SecurityStaff());
         return "security-staff/form";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable String id, Model model) {
+        model.addAttribute("staff", service.findById(id));
+        return "security-staff/form";
+    }
+
+    @GetMapping("/{id}")
+    public String details(@PathVariable String id, Model model) {
+        model.addAttribute("staff", service.findById(id));
+        return "security-staff/details";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute SecurityStaff staff) {
-        // We don't need complex logic anymore, just save the specific object
+    public String save(@ModelAttribute SecurityStaff staff) {
         service.add(staff);
         return "redirect:/security-staff";
     }

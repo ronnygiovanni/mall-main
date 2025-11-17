@@ -1,7 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Customer List</title>
-</head>
+<head><title>Customer List</title></head>
 <body>
 <h1>All Customers</h1>
 <a href="/customers/new">Add New Customer</a>
@@ -10,20 +8,22 @@
         <th>ID</th>
         <th>Name</th>
         <th>Currency</th>
-        <th>Purchases (Count)</th>
         <th>Actions</th>
     </tr>
     <tr th:each="customer : ${customers}">
         <td th:text="${customer.id}"></td>
         <td th:text="${customer.name}"></td>
         <td th:text="${customer.currency}"></td>
-        <td th:text="${#lists.size(customer.purchases)}"></td>
         <td>
-            <form th:action="@{'/customers/' + ${customer.id} + '/delete'}" method="post">
-                <button type="submit">Delete Customer</button>
+            <a th:href="@{'/customers/' + ${customer.id}}">Details</a> |
+            <a th:href="@{'/customers/' + ${customer.id} + '/edit'}">Edit</a> |
+            <form th:action="@{'/customers/' + ${customer.id} + '/delete'}" method="post" style="display:inline">
+                <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
 </table>
+<br/>
+<a href="/">Back to Menu</a>
 </body>
 </html>

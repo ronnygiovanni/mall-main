@@ -1,15 +1,14 @@
 package com.example.MallManagement.service;
 
 import com.example.MallManagement.model.Identifiable;
-import com.example.MallManagement.repository.InMemoryRepository;
-
-import java.util.*;
+import com.example.MallManagement.repository.RepositoryInterface;
+import java.util.List;
 
 public class Service<E extends Identifiable> implements ServiceInterface<E> {
 
-    protected final InMemoryRepository<E> repository;
+    protected final RepositoryInterface<E> repository;
 
-    public Service(InMemoryRepository<E> repository) {
+    public Service(RepositoryInterface<E> repository) {
         this.repository = repository;
     }
 
@@ -33,4 +32,3 @@ public class Service<E extends Identifiable> implements ServiceInterface<E> {
         repository.delete(id);
     }
 }
-

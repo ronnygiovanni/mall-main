@@ -1,0 +1,12 @@
+[
+  {"id":"401","customerId":"301","shopId":"201","amount":99.99},
+  {"id":"402","customerId":"302","shopId":"202","amount":49.50},
+  {"id":"403","customerId":"303","shopId":"203","amount":120.00},
+  {"id":"404","customerId":"304","shopId":"204","amount":800.00},
+  {"id":"405","customerId":"305","shopId":"205","amount":15.99},
+  {"id":"406","customerId":"306","shopId":"206","amount":35.20},
+  {"id":"407","customerId":"307","shopId":"207","amount":5.50},
+  {"id":"408","customerId":"308","shopId":"208","amount":12.00},
+  {"id":"409","customerId":"309","shopId":"209","amount":150.00},
+  {"id":"410","customerId":"310","shopId":"210","amount":85.00}
+]

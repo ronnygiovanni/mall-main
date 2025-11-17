@@ -1,10 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Staff Assignments</title>
-</head>
+<head><title>Staff Assignments</title></head>
 <body>
 <h1>Staff Assignments</h1>
-<a href="/staff-assignments/new">Assign Staff to Floor</a>
+<a href="/staff-assignments/new">Assign Staff</a>
 <table border="1">
     <tr>
         <th>ID</th>
@@ -19,12 +17,15 @@
         <td th:text="${assignment.floorId}"></td>
         <td th:text="${assignment.shift}"></td>
         <td>
-            <form th:action="@{'/staff-assignments/' + ${assignment.id} + '/delete'}" method="post">
+            <a th:href="@{'/staff-assignments/' + ${assignment.id}}">Details</a> |
+            <a th:href="@{'/staff-assignments/' + ${assignment.id} + '/edit'}">Edit</a> |
+            <form th:action="@{'/staff-assignments/' + ${assignment.id} + '/delete'}" method="post" style="display:inline">
                 <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
 </table>
+<br/>
 <a href="/">Back to Menu</a>
 </body>
 </html>

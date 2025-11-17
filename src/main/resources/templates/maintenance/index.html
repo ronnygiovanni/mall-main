@@ -1,7 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Maintenance Tasks</title>
-</head>
+<head><title>Maintenance Tasks</title></head>
 <body>
 <h1>All Maintenance Tasks</h1>
 <a href="/maintenance/new">Add New Task</a>
@@ -10,22 +8,28 @@
         <th>ID</th>
         <th>Description</th>
         <th>Status</th>
-        <th>Assignment ID</th>
         <th>Duration</th>
+        <th>Floor ID</th>
+        <th>Assignment ID</th>
         <th>Actions</th>
     </tr>
     <tr th:each="task : ${tasks}">
         <td th:text="${task.id}"></td>
         <td th:text="${task.description}"></td>
         <td th:text="${task.status}"></td>
-        <td th:text="${task.assignmentId}"></td>
         <td th:text="${task.duration}"></td>
+        <td th:text="${task.floorId}"></td>
+        <td th:text="${task.assignmentId}"></td>
         <td>
-            <form th:action="@{'/maintenance/' + ${task.id} + '/delete'}" method="post">
-                <button type="submit">Delete Task</button>
+            <a th:href="@{'/maintenance/' + ${task.id}}">Details</a> |
+            <a th:href="@{'/maintenance/' + ${task.id} + '/edit'}">Edit</a> |
+            <form th:action="@{'/maintenance/' + ${task.id} + '/delete'}" method="post" style="display:inline">
+                <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
 </table>
+<br/>
+<a href="/">Back to Menu</a>
 </body>
 </html>

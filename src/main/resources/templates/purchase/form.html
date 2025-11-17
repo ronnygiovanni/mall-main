@@ -1,18 +1,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Make Purchase</title>
-</head>
+<head><title>Make Purchase</title></head>
 <body>
 <h1>Make a Purchase</h1>
 <form th:action="@{/purchases}" th:object="${purchase}" method="post">
-    <label>Customer ID:</label>
-    <input type="text" th:field="*{customerId}" /><br>
-
-    <label>Shop ID:</label>
-    <input type="text" th:field="*{shopId}" /><br>
 
     <label>Amount:</label>
-    <input type-="number" step="0.01" th:field="*{amount}" /><br>
+    <input type="number" step="0.01" th:field="*{amount}" /><br>
+
+    <label>Customer:</label>
+    <select th:field="*{customerId}">
+        <option value="">-- Select Customer --</option>
+        <option th:each="cust : ${customers}"
+                th:value="${cust.id}"
+                th:text="${cust.name}"></option>
+    </select><br>
+
+    <label>Shop:</label>
+    <select th:field="*{shopId}">
+        <option value="">-- Select Shop --</option>
+        <option th:each="shop : ${shops}"
+                th:value="${shop.id}"
+                th:text="${shop.name}"></option>
+    </select><br>
 
     <button type="submit">Save Purchase</button>
 </form>

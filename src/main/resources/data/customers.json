@@ -1,0 +1,12 @@
+[
+  {"id":"301","name":"Alice Schmidt","currency":"EUR"},
+  {"id":"302","name":"Bob Mueller","currency":"USD"},
+  {"id":"303","name":"Charlie Brown","currency":"GBP"},
+  {"id":"304","name":"David Jones","currency":"EUR"},
+  {"id":"305","name":"Eva Green","currency":"CHF"},
+  {"id":"306","name":"Frank White","currency":"EUR"},
+  {"id":"307","name":"Grace Black","currency":"USD"},
+  {"id":"308","name":"Hank Hill","currency":"EUR"},
+  {"id":"309","name":"Ivy Blue","currency":"GBP"},
+  {"id":"310","name":"Jack Red","currency":"EUR"}
+]

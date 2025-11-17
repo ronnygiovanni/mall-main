@@ -23,14 +23,25 @@ public class MaintenanceStaffController {
     }
 
     @GetMapping("/new")
-    public String showForm(Model model) {
-        // Create a new MaintenanceStaff
-        model.addAttribute("staff", new MaintenanceStaff(null, "", MaintenanceStaff.Type.Electrical, 0));
+    public String createForm(Model model) {
+        model.addAttribute("staff", new MaintenanceStaff());
         return "maintenance-staff/form";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable String id, Model model) {
+        model.addAttribute("staff", service.findById(id));
+        return "maintenance-staff/form";
+    }
+
+    @GetMapping("/{id}")
+    public String details(@PathVariable String id, Model model) {
+        model.addAttribute("staff", service.findById(id));
+        return "maintenance-staff/details";
+    }
+
     @PostMapping
-    public String create(@ModelAttribute MaintenanceStaff staff) {
+    public String save(@ModelAttribute MaintenanceStaff staff) {
         service.add(staff);
         return "redirect:/maintenance-staff";
     }

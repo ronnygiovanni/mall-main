@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Purchase Details</title></head>
+<body>
+<h1>Purchase Details</h1>
+<div th:if="${purchase != null}">
+    <p><strong>Amount:</strong> <span th:text="${purchase.amount}"></span></p>
+    <p><strong>Customer:</strong>
+        <span th:if="${customer != null}" th:text="${customer.name}"></span>
+        <span th:if="${customer == null}">Unknown Customer</span>
+    </p>
+    <p><strong>Shop:</strong>
+        <span th:if="${shop != null}" th:text="${shop.name}"></span>
+        <span th:if="${shop == null}">Unknown Shop</span>
+    </p>
+</div>
+<div th:if="${purchase == null}">
+    <p style="color:red">Error: Purchase not found.</p>
+</div>
+<br/>
+<a href="/purchases">Back to List</a>
+</body>
+</html>

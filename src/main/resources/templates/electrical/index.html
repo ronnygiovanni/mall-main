@@ -1,29 +1,33 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Electrical Assets</title>
-</head>
+<head><title>Electrical Assets</title></head>
 <body>
 <h1>All Electrical Assets</h1>
 <a href="/assets/new">Add New Asset</a>
 <table border="1">
     <tr>
         <th>ID</th>
-        <th>Floor ID</th>
         <th>Type</th>
         <th>Status</th>
+        <th>Floor ID</th>
+        <th>Assignment ID</th>
         <th>Actions</th>
     </tr>
     <tr th:each="asset : ${assets}">
         <td th:text="${asset.id}"></td>
-        <td th:text="${asset.floorId}"></td>
         <td th:text="${asset.type}"></td>
         <td th:text="${asset.status}"></td>
+        <td th:text="${asset.floorId}"></td>
+        <td th:text="${asset.assignmentId}"></td>
         <td>
-            <form th:action="@{'/assets/' + ${asset.id} + '/delete'}" method="post">
-                <button type="submit">Delete Asset</button>
+            <a th:href="@{'/assets/' + ${asset.id}}">Details</a> |
+            <a th:href="@{'/assets/' + ${asset.id} + '/edit'}">Edit</a> |
+            <form th:action="@{'/assets/' + ${asset.id} + '/delete'}" method="post" style="display:inline">
+                <button type="submit">Delete</button>
             </form>
         </td>
     </tr>
 </table>
+<br/>
+<a href="/">Back to Menu</a>
 </body>
 </html>

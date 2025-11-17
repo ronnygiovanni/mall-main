@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Staff Details</title></head>
+<body>
+<h1>Security Staff Details</h1>
+<div th:if="${staff != null}">
+    <p><strong>Name:</strong> <span th:text="${staff.name}"></span></p>
+    <p><strong>Badge No:</strong> <span th:text="${staff.badgeNo}"></span></p>
+    <p><strong>Salary:</strong> <span th:text="${staff.salary}"></span></p>
+</div>
+<div th:if="${staff == null}">
+    <p style="color:red">Error: Staff not found.</p>
+</div>
+<br/>
+<a href="/security-staff">Back to List</a>
+</body>
+</html>

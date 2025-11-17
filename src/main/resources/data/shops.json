@@ -1,0 +1,12 @@
+[
+  {"id":"201","name":"Saturn","ownerName":"MediaMarkt","areaSqm":2500.0,"rating":4,"floorId":"101"},
+  {"id":"202","name":"Zara","ownerName":"Inditex","areaSqm":1200.0,"rating":5,"floorId":"101"},
+  {"id":"203","name":"H&M","ownerName":"H&M Group","areaSqm":1100.0,"rating":3,"floorId":"102"},
+  {"id":"204","name":"Apple","ownerName":"Apple Inc.","areaSqm":800.0,"rating":5,"floorId":"102"},
+  {"id":"205","name":"Thalia","ownerName":"Thalia Buch","areaSqm":600.0,"rating":4,"floorId":"103"},
+  {"id":"206","name":"DM","ownerName":"Goetz Werner","areaSqm":400.0,"rating":4,"floorId":"103"},
+  {"id":"207","name":"Rewe","ownerName":"Rewe Group","areaSqm":1500.0,"rating":4,"floorId":"104"},
+  {"id":"208","name":"Starbucks","ownerName":"Starbucks Corp","areaSqm":150.0,"rating":3,"floorId":"104"},
+  {"id":"209","name":"Nike","ownerName":"Nike Inc","areaSqm":500.0,"rating":5,"floorId":"105"},
+  {"id":"210","name":"Adidas","ownerName":"Adidas AG","areaSqm":550.0,"rating":5,"floorId":"105"}
+]

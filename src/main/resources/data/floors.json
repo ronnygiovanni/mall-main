@@ -1,0 +1,12 @@
+[
+  {"id":"101","number":0,"mallId":"1"},
+  {"id":"102","number":1,"mallId":"1"},
+  {"id":"103","number":0,"mallId":"2"},
+  {"id":"104","number":1,"mallId":"2"},
+  {"id":"105","number":0,"mallId":"3"},
+  {"id":"106","number":1,"mallId":"3"},
+  {"id":"107","number":0,"mallId":"4"},
+  {"id":"108","number":1,"mallId":"4"},
+  {"id":"109","number":0,"mallId":"5"},
+  {"id":"110","number":1,"mallId":"5"}
+]

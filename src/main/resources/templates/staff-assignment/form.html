@@ -1,32 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>New Staff Assignment</title>
-    <style>
-        .error { color: red; font-weight: bold; }
-    </style>
-</head>
 <body>
 <h1>New Staff Assignment</h1>
-
-<div th:if="${param.error}" class="error">
-    Error: The Staff ID you entered does not exist! Please check the Staff list.
-</div>
 <form th:action="@{/staff-assignments}" th:object="${assignment}" method="post">
+    <label>Staff Member:</label>
+    <select th:field="*{staffId}">
+        <option th:each="s : ${allStaff}" th:value="${s.id}" th:text="${s.name}"></option>
+    </select><br>
 
-    <label>Staff ID:</label>
-    <input type="text" th:field="*{staffId}" placeholder="Enter existing Staff ID" required/><br>
-
-    <label>Floor ID:</label>
-    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required/><br>
+    <label>Floor:</label>
+    <select th:field="*{floorId}">
+        <option th:each="f : ${floors}" th:value="${f.id}" th:text="'Floor ' + ${f.number}"></option>
+    </select><br>
 
     <label>Shift:</label>
     <select th:field="*{shift}">
-        <option th:each="shiftOpt : ${shifts}"
-                th:value="${shiftOpt}"
-                th:text="${shiftOpt}"></option>
+        <option th:each="opt : ${shifts}" th:value="${opt}" th:text="${opt}"></option>
     </select><br>
-
-    <button type="submit">Save Assignment</button>
+    <button type="submit">Save</button>
 </form>
 </body>
-</html>
+</html

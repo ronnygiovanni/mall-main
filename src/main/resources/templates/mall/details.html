@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Mall Details</title></head>
+<body>
+<h1>Mall Details</h1>
+<div th:if="${mall != null}">
+    <p><strong>Name:</strong> <span th:text="${mall.name}"></span></p>
+    <p><strong>City:</strong> <span th:text="${mall.city}"></span></p>
+
+    <h2>Floors</h2>
+    <ul>
+        <li th:each="floor : ${floors}" th:text="'Floor ' + ${floor.number}"></li>
+        <li th:if="${#lists.isEmpty(floors)}">No floors found.</li>
+    </ul>
+</div>
+<div th:if="${mall == null}">
+    <p style="color:red">Error: Mall not found.</p>
+</div>
+<br/>
+<a href="/malls">Back to List</a>
+</body>
+</html>

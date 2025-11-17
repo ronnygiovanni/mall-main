@@ -1,12 +1,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Create Shop</title>
-</head>
+<head><title>Shop Form</title></head>
 <body>
-<h1>Create Shop</h1>
+<h1 th:text="${shop.id == null} ? 'Create Shop' : 'Edit Shop'">Create Shop</h1>
 <form th:action="@{/shops}" th:object="${shop}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
     <label>Name:</label>
-    <input type="text" th:field="*{name}" /><br>
+    <input type="text" th:field="*{name}" required /><br>
 
     <label>Owner Name:</label>
     <input type="text" th:field="*{ownerName}" /><br>
@@ -17,7 +17,17 @@
     <label>Rating:</label>
     <input type="number" th:field="*{rating}" /><br>
 
+    <label>Floor:</label>
+    <select th:field="*{floorId}" required>
+        <option value="">-- Select Floor --</option>
+        <option th:each="floor : ${floors}"
+                th:value="${floor.id}"
+                th:text="'Floor ' + ${floor.number}"></option>
+    </select><br>
+
     <button type="submit">Save Shop</button>
 </form>
+<br/>
+<a href="/shops">Back to List</a>
 </body>
 </html>

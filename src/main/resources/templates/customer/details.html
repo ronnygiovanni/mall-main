@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Customer Details</title></head>
+<body>
+<h1>Customer Details</h1>
+<div th:if="${customer != null}">
+    <p><strong>Name:</strong> <span th:text="${customer.name}"></span></p>
+    <p><strong>Currency:</strong> <span th:text="${customer.currency}"></span></p>
+
+    <h2>Purchase History</h2>
+    <table border="1">
+        <tr><th>ID</th><th>Amount</th><th>Shop ID</th></tr>
+        <tr th:each="p : ${purchases}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.amount}"></td>
+            <td th:text="${p.shopId}"></td>
+        </tr>
+    </table>
+    <p th:if="${#lists.isEmpty(purchases)}">No purchases found.</p>
+</div>
+<div th:if="${customer == null}">
+    <p style="color:red">Error: Customer not found.</p>
+</div>
+<br/>
+<a href="/customers">Back to List</a>
+</body>
+</html>

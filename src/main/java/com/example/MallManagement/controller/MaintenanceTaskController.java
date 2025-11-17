@@ -1,8 +1,9 @@
 package com.example.MallManagement.controller;
 
 import com.example.MallManagement.model.MaintenanceTask;
+import com.example.MallManagement.service.FloorService;
 import com.example.MallManagement.service.MaintenanceTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.MallManagement.service.StaffAssignmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,36 +13,56 @@ import org.springframework.web.bind.annotation.*;
 public class MaintenanceTaskController {
 
     private final MaintenanceTaskService taskService;
+    private final FloorService floorService;
+    private final StaffAssignmentService assignmentService;
 
-    @Autowired
-    public MaintenanceTaskController(MaintenanceTaskService taskService) {
+    public MaintenanceTaskController(MaintenanceTaskService taskService, FloorService floorService, StaffAssignmentService assignmentService) {
         this.taskService = taskService;
+        this.floorService = floorService;
+        this.assignmentService = assignmentService;
     }
 
     @GetMapping
-    public String listTasks(Model model) {
+    public String list(Model model) {
         model.addAttribute("tasks", taskService.findAll());
         return "maintenance/index";
     }
 
+    @GetMapping("/{id}")
+    public String details(@PathVariable String id, Model model) {
+        MaintenanceTask task = taskService.findById(id);
+        model.addAttribute("task", task);
+        model.addAttribute("floor", floorService.findById(task.getFloorId()));
+        if (task.getAssignmentId() != null) {
+            model.addAttribute("assignment", assignmentService.findById(task.getAssignmentId()));
+        }
+        return "maintenance/details";
+    }
+
     @GetMapping("/new")
-    public String showCreateForm(Model model) {
+    public String createForm(Model model) {
         model.addAttribute("task", new MaintenanceTask());
+        model.addAttribute("floors", floorService.findAll());
+        model.addAttribute("assignments", assignmentService.findAll());
+        return "maintenance/form";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable String id, Model model) {
+        model.addAttribute("task", taskService.findById(id));
+        model.addAttribute("floors", floorService.findAll());
+        model.addAttribute("assignments", assignmentService.findAll());
         return "maintenance/form";
     }
 
     @PostMapping
-    public String createTask(@ModelAttribute MaintenanceTask task) {
-        // Validate status manually (simple safeguard)
-        if (!task.getStatus().equals("Planned") && !task.getStatus().equals("Active") && !task.getStatus().equals("Done")) {
-            throw new IllegalArgumentException("Invalid task status: " + task.getStatus());
-        }
+    public String save(@ModelAttribute MaintenanceTask task) {
         taskService.add(task);
         return "redirect:/maintenance";
     }
 
     @PostMapping("/{id}/delete")
-    public String deleteTask(@PathVariable String id) {
+    public String delete(@PathVariable String id) {
         taskService.delete(id);
         return "redirect:/maintenance";
     }
