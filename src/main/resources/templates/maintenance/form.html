@@ -3,7 +3,12 @@
 <h1>Plan Maintenance Task</h1>
 <form th:action="@{/maintenance}" th:object="${task}" method="post">
     <label>Description:</label><input type="text" th:field="*{description}" /><br>
-    <label>Status:</label><input type="text" th:field="*{status}" /><br>
+    <label>Status:</label>
+    <select th:field="*{status}">
+        <option value="Planned">Planned</option>
+        <option value="Active">Active</option>
+        <option value="Done">Done</option>
+    </select><br>
     <label>Duration:</label><input type="number" th:field="*{duration}" /><br>
 
     <label>Floor:</label>
