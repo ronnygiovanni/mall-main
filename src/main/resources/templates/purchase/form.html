@@ -1,27 +1,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Make Purchase</title></head>
 <body>
-<h1>Make a Purchase</h1>
+<h1 th:text="${#strings.isEmpty(purchase.id)} ? 'New Purchase' : 'Edit Purchase'">Purchase</h1>
+
+<div th:if="${error}" style="color: red; margin-bottom: 10px;">
+    <strong>Error:</strong> <span th:text="${error}"></span>
+</div>
+
 <form th:action="@{/purchases}" th:object="${purchase}" method="post">
+    <input type="hidden" th:field="*{id}" />
 
     <label>Amount:</label>
-    <input type="number" step="0.01" th:field="*{amount}" /><br>
+    <input type="number" step="0.01" th:field="*{amount}" required /><br>
 
-    <label>Customer:</label>
-    <select th:field="*{customerId}">
-        <option value="">-- Select Customer --</option>
-        <option th:each="cust : ${customers}"
-                th:value="${cust.id}"
-                th:text="${cust.name}"></option>
-    </select><br>
+    <label>Customer ID:</label>
+    <input type="text" th:field="*{customerId}" placeholder="Enter Customer ID" required /><br>
 
-    <label>Shop:</label>
-    <select th:field="*{shopId}">
-        <option value="">-- Select Shop --</option>
-        <option th:each="shop : ${shops}"
-                th:value="${shop.id}"
-                th:text="${shop.name}"></option>
-    </select><br>
+    <label>Shop ID:</label>
+    <input type="text" th:field="*{shopId}" placeholder="Enter Shop ID" required /><br>
 
     <button type="submit">Save Purchase</button>
 </form>

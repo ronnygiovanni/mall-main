@@ -51,19 +51,23 @@ public class FloorController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("floor", new Floor());
-        model.addAttribute("malls", mallService.findAll());
+
         return "floor/form";
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable String id, Model model) {
         model.addAttribute("floor", floorService.findById(id));
-        model.addAttribute("malls", mallService.findAll());
+
         return "floor/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute Floor floor) {
+    public String save(@ModelAttribute Floor floor, Model model) {
+        if (mallService.findById(floor.getMallId()) == null) {
+            model.addAttribute("error", "The Mall with ID '" + floor.getMallId() + "' does not exist.");
+            return "floor/form";
+        }
         floorService.add(floor);
         return "redirect:/floors";
     }

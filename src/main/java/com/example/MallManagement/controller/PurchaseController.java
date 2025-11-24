@@ -32,7 +32,6 @@ public class PurchaseController {
     public String details(@PathVariable String id, Model model) {
         Purchase purchase = purchaseService.findById(id);
         model.addAttribute("purchase", purchase);
-        // Load related objects for display
         model.addAttribute("customer", customerService.findById(purchase.getCustomerId()));
         model.addAttribute("shop", shopService.findById(purchase.getShopId()));
         return "purchase/details";
@@ -41,21 +40,28 @@ public class PurchaseController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("purchase", new Purchase());
-        model.addAttribute("customers", customerService.findAll());
-        model.addAttribute("shops", shopService.findAll());
         return "purchase/form";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable String id, Model model) {
         model.addAttribute("purchase", purchaseService.findById(id));
-        model.addAttribute("customers", customerService.findAll());
-        model.addAttribute("shops", shopService.findAll());
         return "purchase/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute Purchase purchase) {
+    public String save(@ModelAttribute Purchase purchase, Model model) {
+
+        if (customerService.findById(purchase.getCustomerId()) == null) {
+            model.addAttribute("error", "Customer with ID '" + purchase.getCustomerId() + "' not found.");
+            return "purchase/form";
+        }
+
+        if (shopService.findById(purchase.getShopId()) == null) {
+            model.addAttribute("error", "Shop with ID '" + purchase.getShopId() + "' not found.");
+            return "purchase/form";
+        }
+
         purchaseService.add(purchase);
         return "redirect:/purchases";
     }

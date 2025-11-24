@@ -1,26 +1,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<h1>Create Electrical Asset</h1>
+<h1 th:text="${#strings.isEmpty(asset.id)} ? 'Create Asset' : 'Edit Asset'">Asset</h1>
+
+<div th:if="${error}" style="color: red; margin-bottom: 10px;">
+    <strong>Error:</strong> <span th:text="${error}"></span>
+</div>
+
 <form th:action="@{/assets}" th:object="${asset}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
     <label>Type:</label>
     <select th:field="*{type}">
-        <option value="Lift">Lift</option><option value="AC">AC</option><option value="Light">Light</option>
+        <option value="Lift">Lift</option>
+        <option value="AC">AC</option>
+        <option value="Light">Light</option>
+        <option value="Escalator">Escalator</option>
     </select><br>
+
     <label>Status:</label>
     <select th:field="*{status}">
-        <option value="Working">Working</option><option value="Down">Down</option>
+        <option value="Working">Working</option>
+        <option value="Down">Down</option>
     </select><br>
 
-    <label>Floor:</label>
-    <select th:field="*{floorId}">
-        <option th:each="f : ${floors}" th:value="${f.id}" th:text="'Floor ' + ${f.number}"></option>
-    </select><br>
+    <label>Floor ID:</label>
+    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required /><br>
 
-    <label>Assignment:</label>
-    <select th:field="*{assignmentId}">
-        <option value="">-- None --</option>
-        <option th:each="a : ${assignments}" th:value="${a.id}" th:text="'Assign: ' + ${a.id}"></option>
-    </select><br>
+    <label>Assignment ID:</label>
+    <input type="text" th:field="*{assignmentId}" placeholder="Enter Assignment ID (Optional)" /><br>
+
     <button type="submit">Save</button>
 </form>
 </body>

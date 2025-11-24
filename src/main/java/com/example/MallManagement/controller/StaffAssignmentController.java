@@ -9,7 +9,6 @@ import com.example.MallManagement.service.StaffAssignmentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +40,6 @@ public class StaffAssignmentController {
         model.addAttribute("assignment", assignment);
         model.addAttribute("floor", floorService.findById(assignment.getFloorId()));
 
-        // Find the staff member (could be Security or Maintenance)
         Staff staff = secService.findById(assignment.getStaffId());
         if (staff == null) {
             staff = maintService.findById(assignment.getStaffId());
@@ -53,28 +51,37 @@ public class StaffAssignmentController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("assignment", new StaffAssignment());
-        prepareDropdowns(model);
+        model.addAttribute("shifts", StaffAssignment.Shift.values());
         return "staff-assignment/form";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable String id, Model model) {
         model.addAttribute("assignment", service.findById(id));
-        prepareDropdowns(model);
+        model.addAttribute("shifts", StaffAssignment.Shift.values());
         return "staff-assignment/form";
     }
 
-    private void prepareDropdowns(Model model) {
-        model.addAttribute("shifts", StaffAssignment.Shift.values());
-        model.addAttribute("floors", floorService.findAll());
-        List<Staff> allStaff = new ArrayList<>();
-        allStaff.addAll(secService.findAll());
-        allStaff.addAll(maintService.findAll());
-        model.addAttribute("allStaff", allStaff);
-    }
-
     @PostMapping
-    public String save(@ModelAttribute StaffAssignment sa) {
+    public String save(@ModelAttribute StaffAssignment sa, Model model) {
+        // PREPARE SHIFTS FOR RELOAD (in case of error)
+        model.addAttribute("shifts", StaffAssignment.Shift.values());
+
+
+        if (floorService.findById(sa.getFloorId()) == null) {
+            model.addAttribute("error", "Floor with ID '" + sa.getFloorId() + "' not found.");
+            return "staff-assignment/form";
+        }
+
+
+        boolean isSecurity = secService.findById(sa.getStaffId()) != null;
+        boolean isMaintenance = maintService.findById(sa.getStaffId()) != null;
+
+        if (!isSecurity && !isMaintenance) {
+            model.addAttribute("error", "Staff Member with ID '" + sa.getStaffId() + "' not found in Security or Maintenance.");
+            return "staff-assignment/form";
+        }
+
         service.add(sa);
         return "redirect:/staff-assignments";
     }

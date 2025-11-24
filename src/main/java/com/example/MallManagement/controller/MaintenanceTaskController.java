@@ -42,21 +42,30 @@ public class MaintenanceTaskController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("task", new MaintenanceTask());
-        model.addAttribute("floors", floorService.findAll());
-        model.addAttribute("assignments", assignmentService.findAll());
         return "maintenance/form";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable String id, Model model) {
         model.addAttribute("task", taskService.findById(id));
-        model.addAttribute("floors", floorService.findAll());
-        model.addAttribute("assignments", assignmentService.findAll());
         return "maintenance/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute MaintenanceTask task) {
+    public String save(@ModelAttribute MaintenanceTask task, Model model) {
+
+        if (floorService.findById(task.getFloorId()) == null) {
+            model.addAttribute("error", "Floor with ID '" + task.getFloorId() + "' not found.");
+            return "maintenance/form";
+        }
+
+        if (task.getAssignmentId() != null && !task.getAssignmentId().isEmpty()) {
+            if (assignmentService.findById(task.getAssignmentId()) == null) {
+                model.addAttribute("error", "Assignment with ID '" + task.getAssignmentId() + "' not found.");
+                return "maintenance/form";
+            }
+        }
+
         taskService.add(task);
         return "redirect:/maintenance";
     }

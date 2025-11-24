@@ -42,21 +42,30 @@ public class ElectricalAssetController {
     @GetMapping("/new")
     public String createForm(Model model) {
         model.addAttribute("asset", new ElectricalAsset());
-        model.addAttribute("floors", floorService.findAll());
-        model.addAttribute("assignments", assignmentService.findAll());
         return "electrical/form";
     }
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable String id, Model model) {
         model.addAttribute("asset", assetService.findById(id));
-        model.addAttribute("floors", floorService.findAll());
-        model.addAttribute("assignments", assignmentService.findAll());
         return "electrical/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute ElectricalAsset asset) {
+    public String save(@ModelAttribute ElectricalAsset asset, Model model) {
+
+        if (floorService.findById(asset.getFloorId()) == null) {
+            model.addAttribute("error", "Floor with ID '" + asset.getFloorId() + "' not found.");
+            return "electrical/form";
+        }
+
+        if (asset.getAssignmentId() != null && !asset.getAssignmentId().isEmpty()) {
+            if (assignmentService.findById(asset.getAssignmentId()) == null) {
+                model.addAttribute("error", "Assignment with ID '" + asset.getAssignmentId() + "' not found.");
+                return "electrical/form";
+            }
+        }
+
         assetService.add(asset);
         return "redirect:/assets";
     }

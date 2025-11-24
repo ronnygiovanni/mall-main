@@ -1,21 +1,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head><title>Staff Assignment</title></head>
 <body>
-<h1>New Staff Assignment</h1>
-<form th:action="@{/staff-assignments}" th:object="${assignment}" method="post">
-    <label>Staff Member:</label>
-    <select th:field="*{staffId}">
-        <option th:each="s : ${allStaff}" th:value="${s.id}" th:text="${s.name}"></option>
-    </select><br>
+<h1 th:text="${#strings.isEmpty(assignment.id)} ? 'New Assignment' : 'Edit Assignment'">Assignment</h1>
 
-    <label>Floor:</label>
-    <select th:field="*{floorId}">
-        <option th:each="f : ${floors}" th:value="${f.id}" th:text="'Floor ' + ${f.number}"></option>
-    </select><br>
+<div th:if="${error}" style="color: red; margin-bottom: 10px;">
+    <strong>Error:</strong> <span th:text="${error}"></span>
+</div>
+
+<form th:action="@{/staff-assignments}" th:object="${assignment}" method="post">
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Staff Member ID:</label>
+    <input type="text" th:field="*{staffId}" placeholder="Enter Staff ID" required /><br>
+
+    <label>Floor ID:</label>
+    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required /><br>
 
     <label>Shift:</label>
     <select th:field="*{shift}">
         <option th:each="opt : ${shifts}" th:value="${opt}" th:text="${opt}"></option>
     </select><br>
+
     <button type="submit">Save</button>
 </form>
 </body>
