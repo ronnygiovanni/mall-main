@@ -1,14 +1,17 @@
 package com.example.MallManagement.model;
 
+import jakarta.persistence.Entity;
+import jakarta.validation.constraints.NotBlank;
+
+@Entity
 public class SecurityStaff extends Staff {
+
+    @NotBlank(message = "Badge number is required")
     private String badgeNo;
 
-    public SecurityStaff() {
-        super();
-    }
-
-    public SecurityStaff(String id, String name, String badgeNo, int salary) {
-        super(id, name, salary);
+    public SecurityStaff() {}
+    public SecurityStaff(String name, int salary, String badgeNo) {
+        super(name, salary);
         this.badgeNo = badgeNo;
     }
 

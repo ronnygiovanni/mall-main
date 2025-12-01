@@ -1,13 +1,14 @@
 package com.example.MallManagement.controller;
 
+import com.example.MallManagement.model.Floor;
 import com.example.MallManagement.model.Shop;
 import com.example.MallManagement.service.FloorService;
 import com.example.MallManagement.service.ShopService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/shops")
@@ -24,47 +25,50 @@ public class ShopController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("shops", shopService.findAll());
-        Map<String, Integer> floorNumbers = floorService.findAll().stream()
-                .collect(Collectors.toMap(floor -> floor.getId(), floor -> floor.getNumber()));
-        model.addAttribute("floorNumbers", floorNumbers);
         return "shop/index";
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable String id, Model model) {
-        Shop shop = shopService.findById(id);
-        model.addAttribute("shop", shop);
-        if(shop != null && shop.getFloorId() != null) {
-            model.addAttribute("floor", floorService.findById(shop.getFloorId()));
-        }
+    public String details(@PathVariable Long id, Model model) {
+        model.addAttribute("shop", shopService.findById(id));
         return "shop/details";
     }
 
     @GetMapping("/new")
-    public String showCreateForm(Model model) {
+    public String createForm(Model model) {
         model.addAttribute("shop", new Shop());
         return "shop/form";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable String id, Model model) {
+    public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("shop", shopService.findById(id));
         return "shop/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute Shop shop, Model model) {
+    public String save(@Valid @ModelAttribute Shop shop, BindingResult result,
+                       @RequestParam("floorId") Long floorId, Model model) {
 
-        if (floorService.findById(shop.getFloorId()) == null) {
-            model.addAttribute("error", "The Floor with ID '" + shop.getFloorId() + "' does not exist.");
+        // 1. Validate Form Fields
+        if (result.hasErrors()) {
             return "shop/form";
         }
-        shopService.add(shop);
+
+        // 2. Validate Foreign Key (Floor)
+        Floor floor = floorService.findById(floorId);
+        if (floor == null) {
+            model.addAttribute("error", "Floor with ID " + floorId + " does not exist.");
+            return "shop/form"; // Return to form with error message
+        }
+
+        shop.setFloor(floor);
+        shopService.save(shop);
         return "redirect:/shops";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable Long id) {
         shopService.delete(id);
         return "redirect:/shops";
     }

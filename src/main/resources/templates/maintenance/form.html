@@ -1,16 +1,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head><title>Task Form</title></head>
 <body>
-<h1 th:text="${#strings.isEmpty(task.id)} ? 'Plan Task' : 'Edit Task'">Task</h1>
+<h1 th:text="${task.id == null} ? 'Plan Task' : 'Edit Task'">Task</h1>
 
-<div th:if="${error}" style="color: red; margin-bottom: 10px;">
-    <strong>Error:</strong> <span th:text="${error}"></span>
+<div th:if="${error}" style="color:red; margin-bottom:10px;">
+    <span th:text="${error}"></span>
 </div>
 
 <form th:action="@{/maintenance}" th:object="${task}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <label>Description:</label>
-    <input type="text" th:field="*{description}" required /><br>
+    <input type="text" th:field="*{description}" />
+    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color:red"></span><br>
+
+    <label>Duration (mins):</label>
+    <input type="number" th:field="*{duration}" /><br>
 
     <label>Status:</label>
     <select th:field="*{status}">
@@ -19,16 +24,20 @@
         <option value="Done">Done</option>
     </select><br>
 
-    <label>Duration (mins):</label>
-    <input type="number" th:field="*{duration}" /><br>
-
     <label>Floor ID:</label>
-    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required /><br>
+    <input type="number" name="floorId"
+           th:value="${task.floor != null ? task.floor.id : ''}"
+           required />
+    <br>
 
-    <label>Assignment ID:</label>
-    <input type="text" th:field="*{assignmentId}" placeholder="Enter Assignment ID (Optional)" /><br>
+    <label>Assignment ID (Optional):</label>
+    <input type="number" name="assignmentId"
+           th:value="${task.assignment != null ? task.assignment.id : ''}"
+           placeholder="Optional" />
+    <br>
 
     <button type="submit">Save</button>
 </form>
+<br/><a href="/maintenance">Back to List</a>
 </body>
 </html>

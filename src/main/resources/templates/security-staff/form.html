@@ -1,24 +1,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Security Staff Form</title>
-</head>
+<head><title>Security Staff Form</title></head>
 <body>
-<h1 th:text="${staff.id == null} ? 'Add Security Staff' : 'Edit Security Staff'">Add Security Staff</h1>
+<h1 th:text="${staff.id == null} ? 'Add Security Staff' : 'Edit Security Staff'">Add Staff</h1>
+
 <form th:action="@{/security-staff}" th:object="${staff}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <label>Name:</label>
-    <input type="text" th:field="*{name}" required /><br>
+    <input type="text" th:field="*{name}" />
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
 
     <label>Badge Number:</label>
-    <input type="text" th:field="*{badgeNo}" required /><br>
+    <input type="text" th:field="*{badgeNo}" />
+    <span th:if="${#fields.hasErrors('badgeNo')}" th:errors="*{badgeNo}" style="color:red"></span><br>
 
     <label>Salary:</label>
     <input type="number" th:field="*{salary}" required /><br>
 
     <button type="submit">Save</button>
 </form>
-<br/>
-<a href="/security-staff">Back to List</a>
+<br/><a href="/security-staff">Back to List</a>
 </body>
 </html>

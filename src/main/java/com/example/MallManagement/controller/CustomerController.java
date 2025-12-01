@@ -1,25 +1,21 @@
 package com.example.MallManagement.controller;
 
 import com.example.MallManagement.model.Customer;
-import com.example.MallManagement.model.Purchase;
 import com.example.MallManagement.service.CustomerService;
-import com.example.MallManagement.service.PurchaseService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final PurchaseService purchaseService; // Needed to find purchases
 
-    public CustomerController(CustomerService customerService, PurchaseService purchaseService) {
+    public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
-        this.purchaseService = purchaseService;
     }
 
     @GetMapping
@@ -29,13 +25,8 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable String id, Model model) {
+    public String details(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customerService.findById(id));
-        // Find all purchases made by this customer
-        List<Purchase> purchases = purchaseService.findAll().stream()
-                .filter(p -> p.getCustomerId() != null && p.getCustomerId().equals(id))
-                .toList();
-        model.addAttribute("purchases", purchases);
         return "customer/details";
     }
 
@@ -46,19 +37,22 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable String id, Model model) {
+    public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("customer", customerService.findById(id));
         return "customer/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute Customer customer) {
-        customerService.add(customer);
+    public String save(@Valid @ModelAttribute Customer customer, BindingResult result) {
+        if (result.hasErrors()) {
+            return "customer/form";
+        }
+        customerService.save(customer);
         return "redirect:/customers";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable Long id) {
         customerService.delete(id);
         return "redirect:/customers";
     }

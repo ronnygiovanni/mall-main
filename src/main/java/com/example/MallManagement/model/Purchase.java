@@ -1,20 +1,42 @@
 package com.example.MallManagement.model;
-public class Purchase implements Identifiable {
-    private String id;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+@Entity
+public class Purchase {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Positive(message = "Amount must be positive")
     private double amount;
-    private String customerId; // Foreign Key
-    private String shopId;     // Foreign Key
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    @NotNull(message = "Customer is required")
+    private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id", nullable = false)
+    @NotNull(message = "Shop is required")
+    private Shop shop;
 
     public Purchase() {}
-    public Purchase(String id, String customerId, String shopId, double amount) {
-        this.id = id; this.customerId = customerId; this.shopId = shopId; this.amount = amount;
+    public Purchase(double amount, Customer customer, Shop shop) {
+        this.amount = amount;
+        this.customer = customer;
+        this.shop = shop;
     }
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public double getAmount() { return amount; }
     public void setAmount(double amount) { this.amount = amount; }
-    public String getCustomerId() { return customerId; }
-    public void setCustomerId(String customerId) { this.customerId = customerId; }
-    public String getShopId() { return shopId; }
-    public void setShopId(String shopId) { this.shopId = shopId; }
+    public Customer getCustomer() { return customer; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
+    public Shop getShop() { return shop; }
+    public void setShop(Shop shop) { this.shop = shop; }
 }

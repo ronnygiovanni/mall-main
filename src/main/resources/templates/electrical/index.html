@@ -1,23 +1,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Electrical Assets</title></head>
 <body>
-<h1>All Electrical Assets</h1>
-<a href="/assets/new">Add New Asset</a>
+<h1>Electrical Assets</h1>
+<a href="/assets/new">New Asset</a>
 <table border="1">
     <tr>
         <th>ID</th>
         <th>Type</th>
         <th>Status</th>
-        <th>Floor ID</th>
-        <th>Assignment ID</th>
+        <th>Floor</th>
         <th>Actions</th>
     </tr>
     <tr th:each="asset : ${assets}">
         <td th:text="${asset.id}"></td>
         <td th:text="${asset.type}"></td>
         <td th:text="${asset.status}"></td>
-        <td th:text="${asset.floorId}"></td>
-        <td th:text="${asset.assignmentId}"></td>
+        <td th:text="${asset.floor != null} ? ${asset.floor.number} : 'Unassigned'"></td>
         <td>
             <a th:href="@{'/assets/' + ${asset.id}}">Details</a> |
             <a th:href="@{'/assets/' + ${asset.id} + '/edit'}">Edit</a> |
@@ -27,7 +25,6 @@
         </td>
     </tr>
 </table>
-<br/>
-<a href="/">Back to Menu</a>
+<br/><a href="/">Back to Menu</a>
 </body>
 </html>

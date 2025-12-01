@@ -1,22 +1,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Floor Form</title></head>
 <body>
-<h1 th:text="${#strings.isEmpty(floor.id)} ? 'Create Floor' : 'Edit Floor'">Create Floor</h1>
-<div th:if="${error}" style="color: red; margin-bottom: 10px;">
-    <strong>Error:</strong> <span th:text="${error}"></span>
+<h1 th:text="${floor.id == null} ? 'Create Floor' : 'Edit Floor'">Floor</h1>
+
+<div th:if="${error}" style="color:red; margin-bottom:10px;">
+    <span th:text="${error}"></span>
 </div>
+
 <form th:action="@{/floors}" th:object="${floor}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <label>Floor Number:</label>
-    <input type="number" th:field="*{number}" required /><br>
+    <input type="number" th:field="*{number}" />
+    <span th:if="${#fields.hasErrors('number')}" th:errors="*{number}" style="color:red"></span><br>
 
-    <label>Mall:</label>
-    <input type="text" th:field="*{mallId}" placeholder="Enter Mall ID (e.g. 1)" required /><br>
+    <label>Mall ID:</label>
+    <input type="number" name="mallId"
+           th:value="${floor.mall != null ? floor.mall.id : ''}"
+           placeholder="Enter Mall ID" required />
+    <br>
 
     <button type="submit">Save Floor</button>
 </form>
-<br/>
-<a href="/floors">Back to List</a>
+<br/><a href="/floors">Back to List</a>
 </body>
 </html>

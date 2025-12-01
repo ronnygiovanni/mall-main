@@ -1,17 +1,46 @@
 package com.example.MallManagement.model;
-public class Shop implements Identifiable {
-    private String id, name, ownerName;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Shop {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Shop name is required")
+    private String name;
+
+    private String ownerName;
     private double areaSqm;
+
+    @Min(1) @Max(5)
     private int rating;
-    private String floorId; // Foreign Key
+
+    @ManyToOne
+    @JoinColumn(name = "floor_id", nullable = false)
+    private Floor floor;
+
+    // --- NEW FIX: Cascade Delete ---
+    // When a Shop is deleted, also delete all Purchases linked to it.
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Purchase> purchases = new ArrayList<>();
 
     public Shop() {}
-    public Shop(String id, String name, String ownerName, double areaSqm, int rating, String floorId) {
-        this.id = id; this.name = name; this.ownerName = ownerName;
-        this.areaSqm = areaSqm; this.rating = rating; this.floorId = floorId;
+    public Shop(String name, String ownerName, double areaSqm, int rating, Floor floor) {
+        this.name = name;
+        this.ownerName = ownerName;
+        this.areaSqm = areaSqm;
+        this.rating = rating;
+        this.floor = floor;
     }
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getOwnerName() { return ownerName; }
@@ -20,6 +49,9 @@ public class Shop implements Identifiable {
     public void setAreaSqm(double areaSqm) { this.areaSqm = areaSqm; }
     public int getRating() { return rating; }
     public void setRating(int rating) { this.rating = rating; }
-    public String getFloorId() { return floorId; }
-    public void setFloorId(String floorId) { this.floorId = floorId; }
+    public Floor getFloor() { return floor; }
+    public void setFloor(Floor floor) { this.floor = floor; }
+
+    public List<Purchase> getPurchases() { return purchases; }
+    public void setPurchases(List<Purchase> purchases) { this.purchases = purchases; }
 }

@@ -2,14 +2,16 @@
 <head><title>Maintenance Staff Form</title></head>
 <body>
 <h1 th:text="${staff.id == null} ? 'Add Maintenance Staff' : 'Edit Staff'">Add Staff</h1>
+
 <form th:action="@{/maintenance-staff}" th:object="${staff}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <label>Name:</label>
-    <input type="text" th:field="*{name}" required /><br>
+    <input type="text" th:field="*{name}" />
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
 
     <label>Salary:</label>
-    <input type="number" th:field="*{salary}" /><br>
+    <input type="number" th:field="*{salary}" required /><br>
 
     <label>Specialization:</label>
     <select th:field="*{type}">
@@ -17,9 +19,8 @@
         <option value="Cleaning">Cleaning</option>
     </select><br>
 
-    <button type="submit">Save Staff</button>
+    <button type="submit">Save</button>
 </form>
-<br/>
-<a href="/maintenance-staff">Back to List</a>
+<br/><a href="/maintenance-staff">Back to List</a>
 </body>
 </html>

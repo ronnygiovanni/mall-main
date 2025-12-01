@@ -1,11 +1,15 @@
 package com.example.MallManagement.controller;
 
+import com.example.MallManagement.model.Floor;
 import com.example.MallManagement.model.MaintenanceTask;
+import com.example.MallManagement.model.StaffAssignment;
 import com.example.MallManagement.service.FloorService;
 import com.example.MallManagement.service.MaintenanceTaskService;
 import com.example.MallManagement.service.StaffAssignmentService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,13 +33,8 @@ public class MaintenanceTaskController {
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable String id, Model model) {
-        MaintenanceTask task = taskService.findById(id);
-        model.addAttribute("task", task);
-        model.addAttribute("floor", floorService.findById(task.getFloorId()));
-        if (task.getAssignmentId() != null) {
-            model.addAttribute("assignment", assignmentService.findById(task.getAssignmentId()));
-        }
+    public String details(@PathVariable Long id, Model model) {
+        model.addAttribute("task", taskService.findById(id));
         return "maintenance/details";
     }
 
@@ -46,32 +45,41 @@ public class MaintenanceTaskController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable String id, Model model) {
+    public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("task", taskService.findById(id));
         return "maintenance/form";
     }
 
+    // FIX: Added ("task") to @ModelAttribute
     @PostMapping
-    public String save(@ModelAttribute MaintenanceTask task, Model model) {
+    public String save(@Valid @ModelAttribute("task") MaintenanceTask task, BindingResult result,
+                       @RequestParam("floorId") Long floorId,
+                       @RequestParam(value = "assignmentId", required = false) Long assignmentId,
+                       Model model) {
+        if (result.hasErrors()) return "maintenance/form";
 
-        if (floorService.findById(task.getFloorId()) == null) {
-            model.addAttribute("error", "Floor with ID '" + task.getFloorId() + "' not found.");
+        Floor floor = floorService.findById(floorId);
+        if (floor == null) {
+            model.addAttribute("error", "Floor ID " + floorId + " not found.");
             return "maintenance/form";
         }
+        task.setFloor(floor);
 
-        if (task.getAssignmentId() != null && !task.getAssignmentId().isEmpty()) {
-            if (assignmentService.findById(task.getAssignmentId()) == null) {
-                model.addAttribute("error", "Assignment with ID '" + task.getAssignmentId() + "' not found.");
+        if (assignmentId != null) {
+            StaffAssignment assignment = assignmentService.findById(assignmentId);
+            if (assignment == null) {
+                model.addAttribute("error", "Assignment ID " + assignmentId + " not found.");
                 return "maintenance/form";
             }
+            task.setAssignment(assignment);
         }
 
-        taskService.add(task);
+        taskService.save(task);
         return "redirect:/maintenance";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable Long id) {
         taskService.delete(id);
         return "redirect:/maintenance";
     }

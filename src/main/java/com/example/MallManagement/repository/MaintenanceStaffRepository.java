@@ -1,11 +1,8 @@
 package com.example.MallManagement.repository;
 
 import com.example.MallManagement.model.MaintenanceStaff;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MaintenanceStaffRepository extends InFileRepository<MaintenanceStaff> {
-    public MaintenanceStaffRepository() {
-        super("maintenance_staff.json", MaintenanceStaff.class);
-    }
-}
+public interface MaintenanceStaffRepository extends JpaRepository<MaintenanceStaff, Long> {}

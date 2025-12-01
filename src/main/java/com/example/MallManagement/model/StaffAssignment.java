@@ -1,21 +1,44 @@
 package com.example.MallManagement.model;
-public class StaffAssignment implements Identifiable {
-    private String id;
-    private Shift shift;
-    private String floorId; // Foreign Key
-    private String staffId; // Foreign Key
 
-    public enum Shift { Morning, Evening, Night };
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+@Entity
+public class StaffAssignment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    public enum Shift { Morning, Evening, Night }
+
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Shift is required")
+    private Shift shift;
+
+    @ManyToOne
+    @JoinColumn(name = "floor_id", nullable = false)
+    @NotNull(message = "Floor is required")
+    private Floor floor;
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id", nullable = false)
+    @NotNull(message = "Staff member is required")
+    private Staff staff;
+
     public StaffAssignment() {}
-    public StaffAssignment(String id, String floorId, String staffId, Shift shift) {
-        this.id = id; this.floorId = floorId; this.staffId = staffId; this.shift = shift;
+    public StaffAssignment(Floor floor, Staff staff, Shift shift) {
+        this.floor = floor;
+        this.staff = staff;
+        this.shift = shift;
     }
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-    public String getFloorId() { return floorId; }
-    public void setFloorId(String floorId) { this.floorId = floorId; }
-    public String getStaffId() { return staffId; }
-    public void setStaffId(String staffId) { this.staffId = staffId; }
+
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public Shift getShift() { return shift; }
     public void setShift(Shift shift) { this.shift = shift; }
+    public Floor getFloor() { return floor; }
+    public void setFloor(Floor floor) { this.floor = floor; }
+    public Staff getStaff() { return staff; }
+    public void setStaff(Staff staff) { this.staff = staff; }
 }

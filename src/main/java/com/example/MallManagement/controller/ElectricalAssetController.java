@@ -1,11 +1,15 @@
 package com.example.MallManagement.controller;
 
 import com.example.MallManagement.model.ElectricalAsset;
+import com.example.MallManagement.model.Floor;
+import com.example.MallManagement.model.StaffAssignment;
 import com.example.MallManagement.service.ElectricalAssetService;
 import com.example.MallManagement.service.FloorService;
 import com.example.MallManagement.service.StaffAssignmentService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,13 +33,8 @@ public class ElectricalAssetController {
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable String id, Model model) {
-        ElectricalAsset asset = assetService.findById(id);
-        model.addAttribute("asset", asset);
-        model.addAttribute("floor", floorService.findById(asset.getFloorId()));
-        if(asset.getAssignmentId() != null) {
-            model.addAttribute("assignment", assignmentService.findById(asset.getAssignmentId()));
-        }
+    public String details(@PathVariable Long id, Model model) {
+        model.addAttribute("asset", assetService.findById(id));
         return "electrical/details";
     }
 
@@ -46,32 +45,42 @@ public class ElectricalAssetController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable String id, Model model) {
+    public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("asset", assetService.findById(id));
         return "electrical/form";
     }
 
+    // FIX: Added ("asset") to @ModelAttribute
     @PostMapping
-    public String save(@ModelAttribute ElectricalAsset asset, Model model) {
+    public String save(@Valid @ModelAttribute("asset") ElectricalAsset asset, BindingResult result,
+                       @RequestParam("floorId") Long floorId,
+                       @RequestParam(value = "assignmentId", required = false) Long assignmentId,
+                       Model model) {
 
-        if (floorService.findById(asset.getFloorId()) == null) {
-            model.addAttribute("error", "Floor with ID '" + asset.getFloorId() + "' not found.");
+        if (result.hasErrors()) return "electrical/form";
+
+        Floor floor = floorService.findById(floorId);
+        if (floor == null) {
+            model.addAttribute("error", "Floor ID " + floorId + " not found.");
             return "electrical/form";
         }
+        asset.setFloor(floor);
 
-        if (asset.getAssignmentId() != null && !asset.getAssignmentId().isEmpty()) {
-            if (assignmentService.findById(asset.getAssignmentId()) == null) {
-                model.addAttribute("error", "Assignment with ID '" + asset.getAssignmentId() + "' not found.");
+        if (assignmentId != null) {
+            StaffAssignment assignment = assignmentService.findById(assignmentId);
+            if (assignment == null) {
+                model.addAttribute("error", "Assignment ID " + assignmentId + " not found.");
                 return "electrical/form";
             }
+            asset.setAssignment(assignment);
         }
 
-        assetService.add(asset);
+        assetService.save(asset);
         return "redirect:/assets";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable Long id) {
         assetService.delete(id);
         return "redirect:/assets";
     }

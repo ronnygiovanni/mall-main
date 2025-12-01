@@ -2,20 +2,22 @@
 <head><title>Shop Details</title></head>
 <body>
 <h1>Shop Details</h1>
+
 <div th:if="${shop != null}">
     <p><strong>Name:</strong> <span th:text="${shop.name}"></span></p>
     <p><strong>Owner:</strong> <span th:text="${shop.ownerName}"></span></p>
-    <p><strong>Area:</strong> <span th:text="${shop.areaSqm}"></span></p>
-    <p><strong>Rating:</strong> <span th:text="${shop.rating}"></span></p>
+    <p><strong>Area:</strong> <span th:text="${shop.areaSqm}"></span> sqm</p>
+    <p><strong>Rating:</strong> <span th:text="${shop.rating}"></span>/5</p>
     <p><strong>Location:</strong>
-        <span th:if="${floor != null}" th:text="'Floor ' + ${floor.number}"></span>
-        <span th:if="${floor == null}">Unknown Floor</span>
+        <span th:if="${shop.floor != null}" th:text="'Floor ' + ${shop.floor.number} + ' (' + ${shop.floor.mall.name} + ')'"></span>
+        <span th:if="${shop.floor == null}">Unknown</span>
     </p>
 </div>
+
 <div th:if="${shop == null}">
     <p style="color:red">Error: Shop not found.</p>
 </div>
-<br/>
-<a href="/shops">Back to List</a>
+
+<br/><a href="/shops">Back to List</a>
 </body>
 </html>

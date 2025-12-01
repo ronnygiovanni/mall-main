@@ -1,27 +1,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Staff Assignment</title></head>
+<head><title>Assignment Form</title></head>
 <body>
-<h1 th:text="${#strings.isEmpty(assignment.id)} ? 'New Assignment' : 'Edit Assignment'">Assignment</h1>
+<h1 th:text="${assignment.id == null} ? 'New Assignment' : 'Edit Assignment'">Assignment</h1>
 
-<div th:if="${error}" style="color: red; margin-bottom: 10px;">
-    <strong>Error:</strong> <span th:text="${error}"></span>
+<div th:if="${error}" style="color:red; margin-bottom:10px;">
+    <span th:text="${error}"></span>
 </div>
 
 <form th:action="@{/staff-assignments}" th:object="${assignment}" method="post">
     <input type="hidden" th:field="*{id}" />
 
-    <label>Staff Member ID:</label>
-    <input type="text" th:field="*{staffId}" placeholder="Enter Staff ID" required /><br>
-
-    <label>Floor ID:</label>
-    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required /><br>
-
     <label>Shift:</label>
     <select th:field="*{shift}">
-        <option th:each="opt : ${shifts}" th:value="${opt}" th:text="${opt}"></option>
+        <option th:each="s : ${shifts}" th:value="${s}" th:text="${s}"></option>
     </select><br>
+
+    <label>Floor ID:</label>
+    <input type="number" name="floorId"
+           th:value="${assignment.floor != null ? assignment.floor.id : ''}"
+           required />
+    <br>
+
+    <label>Staff ID:</label>
+    <input type="number" name="staffId"
+           th:value="${assignment.staff != null ? assignment.staff.id : ''}"
+           required />
+    <br>
 
     <button type="submit">Save</button>
 </form>
+<br/><a href="/staff-assignments">Back to List</a>
 </body>
 </html>

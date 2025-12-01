@@ -1,23 +1,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Asset Details</title></head>
 <body>
-<h1>Electrical Asset Details</h1>
+<h1>Asset Details</h1>
+
 <div th:if="${asset != null}">
     <p><strong>Type:</strong> <span th:text="${asset.type}"></span></p>
     <p><strong>Status:</strong> <span th:text="${asset.status}"></span></p>
-    <p><strong>Location:</strong>
-        <span th:if="${floor != null}" th:text="'Floor ' + ${floor.number}"></span>
-        <span th:if="${floor == null}">Unknown Floor</span>
-    </p>
-    <p><strong>Assignment:</strong>
-        <span th:if="${assignment != null}" th:text="'Assignment ' + ${assignment.id}"></span>
-        <span th:if="${assignment == null}">None</span>
+    <p><strong>Floor:</strong> <span th:text="'Floor ' + ${asset.floor.number}"></span></p>
+    <p><strong>Assignment ID:</strong>
+        <span th:text="${asset.assignment != null} ? ${asset.assignment.id} : 'None'"></span>
     </p>
 </div>
+
 <div th:if="${asset == null}">
     <p style="color:red">Error: Asset not found.</p>
 </div>
-<br/>
-<a href="/assets">Back to List</a>
+
+<br/><a href="/assets">Back to List</a>
 </body>
 </html>

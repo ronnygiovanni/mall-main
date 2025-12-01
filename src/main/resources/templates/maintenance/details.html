@@ -1,16 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Task Details</title></head>
 <body>
-<h1>Maintenance Task</h1>
-<p><strong>Description:</strong> <span th:text="${task.description}"></span></p>
-<p><strong>Status:</strong> <span th:text="${task.status}"></span></p>
-<p><strong>Duration:</strong> <span th:text="${task.duration}"></span> mins</p>
-<p><strong>Location:</strong> Floor <span th:text="${floor.number}"></span></p>
-<p><strong>Assigned To:</strong>
-    <span th:if="${assignment != null}" th:text="${assignment.id}"></span>
-    <span th:if="${assignment == null}">Unassigned</span>
-</p>
-<br/>
-<a href="/maintenance">Back to List</a>
+<h1>Task Details</h1>
+
+<div th:if="${task != null}">
+    <p><strong>Description:</strong> <span th:text="${task.description}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${task.status}"></span></p>
+    <p><strong>Duration:</strong> <span th:text="${task.duration}"></span> mins</p>
+    <p><strong>Location:</strong> <span th:text="'Floor ' + ${task.floor.number}"></span></p>
+    <p><strong>Assignment ID:</strong>
+        <span th:text="${task.assignment != null} ? ${task.assignment.id} : 'None'"></span>
+    </p>
+</div>
+
+<div th:if="${task == null}">
+    <p style="color:red">Error: Task not found.</p>
+</div>
+
+<br/><a href="/maintenance">Back to List</a>
 </body>
 </html>

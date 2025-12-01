@@ -1,7 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Shop List</title>
-</head>
+<head><title>Shop List</title></head>
 <body>
 <h1>All Shops</h1>
 <a href="/shops/new">Add New Shop</a>
@@ -9,15 +7,15 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Owner Name</th>
-        <th>Floor Number</th>
+        <th>Owner</th>
+        <th>Floor</th>
         <th>Actions</th>
     </tr>
     <tr th:each="shop : ${shops}">
         <td th:text="${shop.id}"></td>
         <td th:text="${shop.name}"></td>
         <td th:text="${shop.ownerName}"></td>
-        <td th:text="${floorNumbers[shop.floorId]} != null ? 'Floor ' + ${floorNumbers[shop.floorId]} : 'Unknown'"></td>
+        <td th:text="${shop.floor != null} ? 'Floor ' + ${shop.floor.number} : 'Unassigned'"></td>
         <td>
             <a th:href="@{'/shops/' + ${shop.id}}">Details</a> |
             <a th:href="@{'/shops/' + ${shop.id} + '/edit'}">Edit</a> |
@@ -27,7 +25,6 @@
         </td>
     </tr>
 </table>
-<br/>
-<a href="/">Back to Menu</a>
+<br/><a href="/">Back to Menu</a>
 </body>
 </html>

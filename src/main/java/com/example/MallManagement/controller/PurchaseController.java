@@ -1,11 +1,15 @@
 package com.example.MallManagement.controller;
 
+import com.example.MallManagement.model.Customer;
 import com.example.MallManagement.model.Purchase;
+import com.example.MallManagement.model.Shop;
 import com.example.MallManagement.service.CustomerService;
 import com.example.MallManagement.service.PurchaseService;
 import com.example.MallManagement.service.ShopService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,11 +33,8 @@ public class PurchaseController {
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable String id, Model model) {
-        Purchase purchase = purchaseService.findById(id);
-        model.addAttribute("purchase", purchase);
-        model.addAttribute("customer", customerService.findById(purchase.getCustomerId()));
-        model.addAttribute("shop", shopService.findById(purchase.getShopId()));
+    public String details(@PathVariable Long id, Model model) {
+        model.addAttribute("purchase", purchaseService.findById(id));
         return "purchase/details";
     }
 
@@ -44,30 +45,40 @@ public class PurchaseController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable String id, Model model) {
+    public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("purchase", purchaseService.findById(id));
         return "purchase/form";
     }
 
     @PostMapping
-    public String save(@ModelAttribute Purchase purchase, Model model) {
+    public String save(@Valid @ModelAttribute Purchase purchase, BindingResult result,
+                       @RequestParam("customerId") Long customerId,
+                       @RequestParam("shopId") Long shopId, Model model) {
 
-        if (customerService.findById(purchase.getCustomerId()) == null) {
-            model.addAttribute("error", "Customer with ID '" + purchase.getCustomerId() + "' not found.");
+        if (result.hasErrors()) {
             return "purchase/form";
         }
 
-        if (shopService.findById(purchase.getShopId()) == null) {
-            model.addAttribute("error", "Shop with ID '" + purchase.getShopId() + "' not found.");
+        Customer customer = customerService.findById(customerId);
+        if (customer == null) {
+            model.addAttribute("error", "Customer ID " + customerId + " not found.");
             return "purchase/form";
         }
 
-        purchaseService.add(purchase);
+        Shop shop = shopService.findById(shopId);
+        if (shop == null) {
+            model.addAttribute("error", "Shop ID " + shopId + " not found.");
+            return "purchase/form";
+        }
+
+        purchase.setCustomer(customer);
+        purchase.setShop(shop);
+        purchaseService.save(purchase);
         return "redirect:/purchases";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable Long id) {
         purchaseService.delete(id);
         return "redirect:/purchases";
     }

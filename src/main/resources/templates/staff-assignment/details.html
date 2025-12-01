@@ -2,21 +2,17 @@
 <head><title>Assignment Details</title></head>
 <body>
 <h1>Assignment Details</h1>
+
 <div th:if="${assignment != null}">
     <p><strong>Shift:</strong> <span th:text="${assignment.shift}"></span></p>
-    <p><strong>Floor:</strong>
-        <span th:if="${floor != null}" th:text="'Floor ' + ${floor.number}"></span>
-        <span th:if="${floor == null}">Unknown Floor</span>
-    </p>
-    <p><strong>Staff Member:</strong>
-        <span th:if="${staff != null}" th:text="${staff.name}"></span>
-        <span th:if="${staff == null}">Unknown Staff</span>
-    </p>
+    <p><strong>Staff:</strong> <span th:text="${assignment.staff.name}"></span></p>
+    <p><strong>Floor:</strong> <span th:text="'Floor ' + ${assignment.floor.number}"></span></p>
 </div>
+
 <div th:if="${assignment == null}">
     <p style="color:red">Error: Assignment not found.</p>
 </div>
-<br/>
-<a href="/staff-assignments">Back to List</a>
+
+<br/><a href="/staff-assignments">Back to List</a>
 </body>
 </html>

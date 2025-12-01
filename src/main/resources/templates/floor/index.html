@@ -1,21 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Floor List</title>
-</head>
+<head><title>Floor List</title></head>
 <body>
 <h1>All Floors</h1>
 <a href="/floors/new">Add New Floor</a>
 <table border="1">
     <tr>
         <th>ID</th>
-        <th>Floor Number</th>
-        <th>Mall Name</th>
+        <th>Number</th>
+        <th>Mall</th>
         <th>Actions</th>
     </tr>
     <tr th:each="floor : ${floors}">
         <td th:text="${floor.id}"></td>
         <td th:text="${floor.number}"></td>
-        <td th:text="${mallNames[floor.mallId]} ?: 'Unknown'"></td>
+        <td th:text="${floor.mall != null} ? ${floor.mall.name} : 'Unknown'"></td>
         <td>
             <a th:href="@{'/floors/' + ${floor.id}}">Details</a> |
             <a th:href="@{'/floors/' + ${floor.id} + '/edit'}">Edit</a> |
@@ -25,7 +23,6 @@
         </td>
     </tr>
 </table>
-<br/>
-<a href="/">Back to Menu</a>
+<br/><a href="/">Back to Menu</a>
 </body>
 </html>

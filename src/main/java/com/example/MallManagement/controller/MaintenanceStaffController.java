@@ -2,8 +2,10 @@ package com.example.MallManagement.controller;
 
 import com.example.MallManagement.model.MaintenanceStaff;
 import com.example.MallManagement.service.MaintenanceStaffService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -29,25 +31,28 @@ public class MaintenanceStaffController {
     }
 
     @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable String id, Model model) {
+    public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("staff", service.findById(id));
         return "maintenance-staff/form";
     }
 
     @GetMapping("/{id}")
-    public String details(@PathVariable String id, Model model) {
+    public String details(@PathVariable Long id, Model model) {
         model.addAttribute("staff", service.findById(id));
         return "maintenance-staff/details";
     }
 
     @PostMapping
-    public String save(@ModelAttribute MaintenanceStaff staff) {
-        service.add(staff);
+    public String save(@Valid @ModelAttribute("staff") MaintenanceStaff staff, BindingResult result) {
+        if (result.hasErrors()) {
+            return "maintenance-staff/form";
+        }
+        service.save(staff);
         return "redirect:/maintenance-staff";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable Long id) {
         service.delete(id);
         return "redirect:/maintenance-staff";
     }

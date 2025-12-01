@@ -2,18 +2,20 @@
 <head><title>Customer Form</title></head>
 <body>
 <h1 th:text="${customer.id == null} ? 'Create Customer' : 'Edit Customer'">Create Customer</h1>
+
 <form th:action="@{/customers}" th:object="${customer}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <label>Name:</label>
-    <input type="text" th:field="*{name}" required /><br>
+    <input type="text" th:field="*{name}" />
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
 
     <label>Currency:</label>
-    <input type="text" th:field="*{currency}" required /><br>
+    <input type="text" th:field="*{currency}" />
+    <span th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}" style="color:red"></span><br>
 
     <button type="submit">Save Customer</button>
 </form>
-<br/>
-<a href="/customers">Back to List</a>
+<br/><a href="/customers">Back to List</a>
 </body>
 </html>

@@ -1,9 +1,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<head><title>Asset Form</title></head>
 <body>
-<h1 th:text="${#strings.isEmpty(asset.id)} ? 'Create Asset' : 'Edit Asset'">Asset</h1>
+<h1 th:text="${asset.id == null} ? 'New Asset' : 'Edit Asset'">Asset</h1>
 
-<div th:if="${error}" style="color: red; margin-bottom: 10px;">
-    <strong>Error:</strong> <span th:text="${error}"></span>
+<div th:if="${error}" style="color:red; margin-bottom:10px;">
+    <span th:text="${error}"></span>
 </div>
 
 <form th:action="@{/assets}" th:object="${asset}" method="post">
@@ -24,12 +25,19 @@
     </select><br>
 
     <label>Floor ID:</label>
-    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required /><br>
+    <input type="number" name="floorId"
+           th:value="${asset.floor != null ? asset.floor.id : ''}"
+           required />
+    <br>
 
-    <label>Assignment ID:</label>
-    <input type="text" th:field="*{assignmentId}" placeholder="Enter Assignment ID (Optional)" /><br>
+    <label>Assignment ID (Optional):</label>
+    <input type="number" name="assignmentId"
+           th:value="${asset.assignment != null ? asset.assignment.id : ''}"
+           placeholder="Optional" />
+    <br>
 
     <button type="submit">Save</button>
 </form>
+<br/><a href="/assets">Back to List</a>
 </body>
 </html>

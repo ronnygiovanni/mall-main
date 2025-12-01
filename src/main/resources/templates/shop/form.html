@@ -1,33 +1,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head><title>Shop Form</title></head>
 <body>
-<h1 th:text="${#strings.isEmpty(shop.id)} ? 'Create Shop' : 'Edit Shop'">Create Shop</h1>
+<h1 th:text="${shop.id == null} ? 'Create Shop' : 'Edit Shop'">Shop</h1>
 
-<div th:if="${error}" style="color: red; margin-bottom: 10px;">
-    <strong>Error:</strong> <span th:text="${error}"></span>
+<div th:if="${error}" style="color:red; margin-bottom:10px;">
+    <span th:text="${error}"></span>
 </div>
 
 <form th:action="@{/shops}" th:object="${shop}" method="post">
     <input type="hidden" th:field="*{id}" />
 
     <label>Name:</label>
-    <input type="text" th:field="*{name}" required /><br>
+    <input type="text" th:field="*{name}" />
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
 
     <label>Owner Name:</label>
     <input type="text" th:field="*{ownerName}" /><br>
 
     <label>Area (sqm):</label>
-    <input type="number" step="0.01" th:field="*{areaSqm}" /><br>
+    <input type="number" step="0.1" th:field="*{areaSqm}" /><br>
 
     <label>Rating:</label>
     <input type="number" th:field="*{rating}" /><br>
 
     <label>Floor ID:</label>
-    <input type="text" th:field="*{floorId}" placeholder="Enter Floor ID" required /><br>
+    <input type="number" name="floorId"
+           th:value="${shop.floor != null ? shop.floor.id : ''}"
+           placeholder="Enter Floor ID" required />
+    <br>
 
     <button type="submit">Save Shop</button>
 </form>
-<br/>
-<a href="/shops">Back to List</a>
+<br/><a href="/shops">Back to List</a>
 </body>
 </html>
