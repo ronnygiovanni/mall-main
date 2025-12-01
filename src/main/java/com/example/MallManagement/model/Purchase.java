@@ -1,7 +1,6 @@
 package com.example.MallManagement.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Entity
@@ -15,12 +14,12 @@ public class Purchase {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    @NotNull(message = "Customer is required")
+    // REMOVED @NotNull
     private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "shop_id", nullable = false)
-    @NotNull(message = "Shop is required")
+    // REMOVED @NotNull
     private Shop shop;
 
     public Purchase() {}

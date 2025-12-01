@@ -17,12 +17,12 @@ public class StaffAssignment {
 
     @ManyToOne
     @JoinColumn(name = "floor_id", nullable = false)
-    @NotNull(message = "Floor is required")
+    // REMOVED @NotNull here because we set it manually in the Controller
     private Floor floor;
 
     @ManyToOne
     @JoinColumn(name = "staff_id", nullable = false)
-    @NotNull(message = "Staff member is required")
+    // REMOVED @NotNull here
     private Staff staff;
 
     public StaffAssignment() {}

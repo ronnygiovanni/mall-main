@@ -12,7 +12,7 @@
     <artifactId>mall-main</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Map</name>
-    <description>Map proiect</description>
+    <description>Map proiects</description>
     <url/>
     <licenses>
         <license/>
@@ -81,3 +81,4 @@
     </build>
 
 </project>
+
