@@ -3,8 +3,8 @@
 <body>
 <h1 th:text="${assignment.id == null} ? 'New Assignment' : 'Edit Assignment'">Assignment</h1>
 
-<div th:if="${error}" style="color:red; margin-bottom:10px;">
-    <span th:text="${error}"></span>
+<div th:if="${error}" style="color:red; margin-bottom:10px; border: 1px solid red; padding: 5px;">
+    <strong>Error:</strong> <span th:text="${error}"></span>
 </div>
 
 <form th:action="@{/staff-assignments}" th:object="${assignment}" method="post">
@@ -13,7 +13,9 @@
     <label>Shift:</label>
     <select th:field="*{shift}">
         <option th:each="s : ${shifts}" th:value="${s}" th:text="${s}"></option>
-    </select><br>
+    </select>
+    <span th:if="${#fields.hasErrors('shift')}" th:errors="*{shift}" style="color:red"></span>
+    <br>
 
     <label>Floor ID:</label>
     <input type="number" name="floorId"
