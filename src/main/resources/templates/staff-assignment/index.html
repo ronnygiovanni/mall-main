@@ -1,16 +1,49 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Assignments</title></head>
+<head>
+    <title>Assignments</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Staff Assignments</h1>
-<a href="/staff-assignments/new">New Assignment</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/staff-assignments}" method="get">
+        <select name="shift">
+            <option value="">All Shifts</option>
+            <option th:each="shiftOpt : ${shifts}" th:value="${shiftOpt}" th:text="${shiftOpt}" th:selected="${shiftOpt == shift}"></option>
+        </select>
+        <select name="floorId">
+            <option value="">All Floors</option>
+            <option th:each="floor : ${floors}" th:value="${floor.id}" th:text="'Floor ' + ${floor.number}" th:selected="${floor.id == floorId}"></option>
+        </select>
+        <select name="staffId">
+            <option value="">All Staff</option>
+            <option th:each="staff : ${staffList}" th:value="${staff.id}" th:text="${staff.name}" th:selected="${staff.id == staffId}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/staff-assignments}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/staff-assignments/new" class="btn btn-primary">New Assignment</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Staff</th>
-        <th>Floor</th>
-        <th>Shift</th>
+        <th>
+            <a th:href="@{/staff-assignments(sortField='id', sortDir=${reverseSortDir}, shift=${shift}, floorId=${floorId}, staffId=${staffId})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/staff-assignments(sortField='staff.name', sortDir=${reverseSortDir}, shift=${shift}, floorId=${floorId}, staffId=${staffId})}">Staff</a>
+        </th>
+        <th>
+            <a th:href="@{/staff-assignments(sortField='floor.number', sortDir=${reverseSortDir}, shift=${shift}, floorId=${floorId}, staffId=${staffId})}">Floor</a>
+        </th>
+        <th>
+            <a th:href="@{/staff-assignments(sortField='shift', sortDir=${reverseSortDir}, shift=${shift}, floorId=${floorId}, staffId=${staffId})}">Shift</a>
+        </th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="assignment : ${assignments}">
         <td th:text="${assignment.id}"></td>
         <td th:text="${assignment.staff != null} ? ${assignment.staff.name} : 'Unknown'"></td>
@@ -20,11 +53,12 @@
             <a th:href="@{'/staff-assignments/' + ${assignment.id}}">Details</a> |
             <a th:href="@{'/staff-assignments/' + ${assignment.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/staff-assignments/' + ${assignment.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class.back-link>Back to Menu</a>
 </body>
 </html>

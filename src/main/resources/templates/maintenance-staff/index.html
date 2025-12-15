@@ -1,16 +1,40 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Maintenance Staff</title></head>
+<head>
+    <title>Maintenance Staff</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Maintenance Staff</h1>
-<a href="/maintenance-staff/new">Add New</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/maintenance-staff}" method="get">
+        <input type="text" name="name" th:value="${name}" placeholder="Filter by name...">
+        <select name="type">
+            <option value="">All Types</option>
+            <option th:each="typeOpt : ${types}" th:value="${typeOpt}" th:text="${typeOpt}" th:selected="${typeOpt == type}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/maintenance-staff}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/maintenance-staff/new" class="btn btn-primary">Add New</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Type</th>
+        <th>
+            <a th:href="@{/maintenance-staff(sortField='id', sortDir=${reverseSortDir}, name=${name}, type=${type})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/maintenance-staff(sortField='name', sortDir=${reverseSortDir}, name=${name}, type=${type})}">Name</a>
+        </th>
+        <th>
+            <a th:href="@{/maintenance-staff(sortField='type', sortDir=${reverseSortDir}, name=${name}, type=${type})}">Type</a>
+        </th>
         <th>Salary</th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="staff : ${staffList}">
         <td th:text="${staff.id}"></td>
         <td th:text="${staff.name}"></td>
@@ -20,11 +44,12 @@
             <a th:href="@{'/maintenance-staff/' + ${staff.id}}">Details</a> |
             <a th:href="@{'/maintenance-staff/' + ${staff.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/maintenance-staff/' + ${staff.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

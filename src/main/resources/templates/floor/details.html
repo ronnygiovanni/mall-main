@@ -1,23 +1,40 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Floor Details</title></head>
+<head>
+    <title>Floor Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Floor Details</h1>
 
-<div th:if="${floor != null}">
+<div th:if="${floor != null}" class="form-container">
     <p><strong>Number:</strong> <span th:text="${floor.number}"></span></p>
     <p><strong>Mall:</strong> <span th:text="${floor.mall.name}"></span></p>
 
     <h2>Shops on this Floor</h2>
-    <ul>
-        <li th:each="shop : ${floor.shops}" th:text="${shop.name}"></li>
-        <li th:if="${#lists.isEmpty(floor.shops)}">No shops found.</li>
-    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="shop : ${floor.shops}">
+                <td th:text="${shop.id}"></td>
+                <td th:text="${shop.name}"></td>
+                <td th:text="${shop.ownerName}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <p th:if="${#lists.isEmpty(floor.shops)}">No shops found.</p>
 </div>
 
 <div th:if="${floor == null}">
     <p style="color:red">Error: Floor not found.</p>
 </div>
 
-<br/><a href="/floors">Back to List</a>
+<br/><a href="/floors" class="back-link">Back to List</a>
 </body>
 </html>

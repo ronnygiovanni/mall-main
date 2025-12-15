@@ -1,26 +1,38 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Maintenance Staff Form</title></head>
+<head>
+    <title>Maintenance Staff Form</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1 th:text="${staff.id == null} ? 'Add Maintenance Staff' : 'Edit Staff'">Add Staff</h1>
 
-<form th:action="@{/maintenance-staff}" th:object="${staff}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+    <form th:action="@{/maintenance-staff}" th:object="${staff}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Name:</label>
-    <input type="text" th:field="*{name}" />
-    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
+        <div>
+            <label>Name:</label>
+            <input type="text" th:field="*{name}" />
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span>
+        </div>
 
-    <label>Salary:</label>
-    <input type="number" th:field="*{salary}" required /><br>
+        <div>
+            <label>Salary:</label>
+            <input type="number" th:field="*{salary}" required />
+        </div>
 
-    <label>Specialization:</label>
-    <select th:field="*{type}">
-        <option value="Electrical">Electrical</option>
-        <option value="Cleaning">Cleaning</option>
-    </select><br>
+        <div>
+            <label>Specialization:</label>
+            <select th:field="*{type}">
+                <option value="Electrical">Electrical</option>
+                <option value="Cleaning">Cleaning</option>
+            </select>
+        </div>
 
-    <button type="submit">Save</button>
-</form>
-<br/><a href="/maintenance-staff">Back to List</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+<br/><a href="/maintenance-staff" class="back-link">Back to List</a>
 </body>
 </html>

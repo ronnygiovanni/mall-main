@@ -1,15 +1,37 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Floor List</title></head>
+<head>
+    <title>Floor List</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>All Floors</h1>
-<a href="/floors/new">Add New Floor</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/floors}" method="get">
+        <input type="number" name="number" th:value="${number}" placeholder="Filter by number...">
+        <select name="mallId">
+            <option value="">All Malls</option>
+            <option th:each="mall : ${malls}" th:value="${mall.id}" th:text="${mall.name}" th:selected="${mall.id == mallId}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/floors}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/floors/new" class="btn btn-primary">Add New Floor</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Number</th>
+        <th>
+            <a th:href="@{/floors(sortField='id', sortDir=${reverseSortDir}, number=${number}, mallId=${mallId})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/floors(sortField='number', sortDir=${reverseSortDir}, number=${number}, mallId=${mallId})}">Number</a>
+        </th>
         <th>Mall</th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="floor : ${floors}">
         <td th:text="${floor.id}"></td>
         <td th:text="${floor.number}"></td>
@@ -18,11 +40,12 @@
             <a th:href="@{'/floors/' + ${floor.id}}">Details</a> |
             <a th:href="@{'/floors/' + ${floor.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/floors/' + ${floor.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

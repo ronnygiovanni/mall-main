@@ -3,6 +3,7 @@ package com.example.MallManagement.controller;
 import com.example.MallManagement.model.Customer;
 import com.example.MallManagement.service.CustomerService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +20,19 @@ public class CustomerController {
     }
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("customers", customerService.findAll());
+    public String list(Model model,
+                       @RequestParam(defaultValue = "id") String sortField,
+                       @RequestParam(defaultValue = "asc") String sortDir,
+                       @RequestParam(defaultValue = "") String name,
+                       @RequestParam(defaultValue = "") String currency) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+        model.addAttribute("customers", customerService.findAll(name, currency, sort));
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("name", name);
+        model.addAttribute("currency", currency);
         return "customer/index";
     }
 

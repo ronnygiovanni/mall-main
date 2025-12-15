@@ -1,0 +1,37 @@
+body {
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+.filter-form {
+    margin-bottom: 20px;
+}
+
+.btn {
+    margin-right: 5px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+}

@@ -1,21 +1,31 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Customer Form</title></head>
+<head>
+    <title>Customer Form</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1 th:text="${customer.id == null} ? 'Create Customer' : 'Edit Customer'">Create Customer</h1>
 
-<form th:action="@{/customers}" th:object="${customer}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+    <form th:action="@{/customers}" th:object="${customer}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Name:</label>
-    <input type="text" th:field="*{name}" />
-    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
+        <div>
+            <label>Name:</label>
+            <input type="text" th:field="*{name}" />
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span>
+        </div>
 
-    <label>Currency:</label>
-    <input type="text" th:field="*{currency}" />
-    <span th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}" style="color:red"></span><br>
+        <div>
+            <label>Email:</label>
+            <input type="email" th:field="*{email}" />
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red"></span>
+        </div>
 
-    <button type="submit">Save Customer</button>
-</form>
-<br/><a href="/customers">Back to List</a>
+        <button type="submit" class="btn btn-primary">Save Customer</button>
+    </form>
+</div>
+<br/><a href="/customers" class="back-link">Back to List</a>
 </body>
 </html>

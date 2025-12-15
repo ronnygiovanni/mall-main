@@ -1,15 +1,36 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Customer List</title></head>
+<head>
+    <title>Customer List</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>All Customers</h1>
-<a href="/customers/new">Add New Customer</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/customers}" method="get">
+        <input type="text" name="name" th:value="${name}" placeholder="Filter by name...">
+        <input type="text" name="currency" th:value="${currency}" placeholder="Filter by currency...">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/customers}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/customers/new" class="btn btn-primary">Add New Customer</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Currency</th>
+        <th>
+            <a th:href="@{/customers(sortField='id', sortDir=${reverseSortDir}, name=${name}, currency=${currency})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/customers(sortField='name', sortDir=${reverseSortDir}, name=${name}, currency=${currency})}">Name</a>
+        </th>
+        <th>
+            <a th:href="@{/customers(sortField='currency', sortDir=${reverseSortDir}, name=${name}, currency=${currency})}">Currency</a>
+        </th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="customer : ${customers}">
         <td th:text="${customer.id}"></td>
         <td th:text="${customer.name}"></td>
@@ -18,11 +39,12 @@
             <a th:href="@{'/customers/' + ${customer.id}}">Details</a> |
             <a th:href="@{'/customers/' + ${customer.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/customers/' + ${customer.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

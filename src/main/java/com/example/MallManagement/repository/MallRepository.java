@@ -2,7 +2,8 @@ package com.example.MallManagement.repository;
 
 import com.example.MallManagement.model.Mall;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MallRepository extends JpaRepository<Mall, Long> {}
+public interface MallRepository extends JpaRepository<Mall, Long>, JpaSpecificationExecutor<Mall> {}

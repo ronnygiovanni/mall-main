@@ -1,9 +1,13 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Staff Details</title></head>
+<head>
+    <title>Staff Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Security Staff Details</h1>
 
-<div th:if="${staff != null}">
+<div th:if="${staff != null}" class="form-container">
     <p><strong>Name:</strong> <span th:text="${staff.name}"></span></p>
     <p><strong>Badge No:</strong> <span th:text="${staff.badgeNo}"></span></p>
     <p><strong>Salary:</strong> <span th:text="${staff.salary}"></span></p>
@@ -13,6 +17,6 @@
     <p style="color:red">Error: Staff not found.</p>
 </div>
 
-<br/><a href="/security-staff">Back to List</a>
+<br/><a href="/security-staff" class="back-link">Back to List</a>
 </body>
 </html>

@@ -1,24 +1,36 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Security Staff Form</title></head>
+<head>
+    <title>Security Staff Form</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1 th:text="${staff.id == null} ? 'Add Security Staff' : 'Edit Security Staff'">Add Staff</h1>
 
-<form th:action="@{/security-staff}" th:object="${staff}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+    <form th:action="@{/security-staff}" th:object="${staff}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Name:</label>
-    <input type="text" th:field="*{name}" />
-    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span><br>
+        <div>
+            <label>Name:</label>
+            <input type="text" th:field="*{name}" />
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></span>
+        </div>
 
-    <label>Badge Number:</label>
-    <input type="text" th:field="*{badgeNo}" />
-    <span th:if="${#fields.hasErrors('badgeNo')}" th:errors="*{badgeNo}" style="color:red"></span><br>
+        <div>
+            <label>Badge Number:</label>
+            <input type="text" th:field="*{badgeNo}" />
+            <span th:if="${#fields.hasErrors('badgeNo')}" th:errors="*{badgeNo}" style="color:red"></span>
+        </div>
 
-    <label>Salary:</label>
-    <input type="number" th:field="*{salary}" required /><br>
+        <div>
+            <label>Salary:</label>
+            <input type="number" th:field="*{salary}" required />
+        </div>
 
-    <button type="submit">Save</button>
-</form>
-<br/><a href="/security-staff">Back to List</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+<br/><a href="/security-staff" class="back-link">Back to List</a>
 </body>
 </html>

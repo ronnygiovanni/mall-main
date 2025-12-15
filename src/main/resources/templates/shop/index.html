@@ -1,16 +1,41 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Shop List</title></head>
+<head>
+    <title>Shop List</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>All Shops</h1>
-<a href="/shops/new">Add New Shop</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/shops}" method="get">
+        <input type="text" name="name" th:value="${name}" placeholder="Filter by name...">
+        <input type="text" name="ownerName" th:value="${ownerName}" placeholder="Filter by owner...">
+        <select name="floorId">
+            <option value="">All Floors</option>
+            <option th:each="floor : ${floors}" th:value="${floor.id}" th:text="'Floor ' + ${floor.number}" th:selected="${floor.id == floorId}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/shops}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/shops/new" class="btn btn-primary">Add New Shop</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Owner</th>
+        <th>
+            <a th:href="@{/shops(sortField='id', sortDir=${reverseSortDir}, name=${name}, ownerName=${ownerName}, floorId=${floorId})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/shops(sortField='name', sortDir=${reverseSortDir}, name=${name}, ownerName=${ownerName}, floorId=${floorId})}">Name</a>
+        </th>
+        <th>
+            <a th:href="@{/shops(sortField='ownerName', sortDir=${reverseSortDir}, name=${name}, ownerName=${ownerName}, floorId=${floorId})}">Owner</a>
+        </th>
         <th>Floor</th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="shop : ${shops}">
         <td th:text="${shop.id}"></td>
         <td th:text="${shop.name}"></td>
@@ -20,11 +45,12 @@
             <a th:href="@{'/shops/' + ${shop.id}}">Details</a> |
             <a th:href="@{'/shops/' + ${shop.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/shops/' + ${shop.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

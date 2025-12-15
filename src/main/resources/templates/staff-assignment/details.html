@@ -1,9 +1,13 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Assignment Details</title></head>
+<head>
+    <title>Assignment Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Assignment Details</h1>
 
-<div th:if="${assignment != null}">
+<div th:if="${assignment != null}" class="form-container">
     <p><strong>Shift:</strong> <span th:text="${assignment.shift}"></span></p>
     <p><strong>Staff:</strong> <span th:text="${assignment.staff.name}"></span></p>
     <p><strong>Floor:</strong> <span th:text="'Floor ' + ${assignment.floor.number}"></span></p>
@@ -13,6 +17,6 @@
     <p style="color:red">Error: Assignment not found.</p>
 </div>
 
-<br/><a href="/staff-assignments">Back to List</a>
+<br/><a href="/staff-assignments" class="back-link">Back to List</a>
 </body>
 </html>

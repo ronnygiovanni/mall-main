@@ -1,16 +1,37 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Security Staff</title></head>
+<head>
+    <title>Security Staff</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Security Staff</h1>
-<a href="/security-staff/new">Add New</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/security-staff}" method="get">
+        <input type="text" name="name" th:value="${name}" placeholder="Filter by name...">
+        <input type="text" name="badgeNo" th:value="${badgeNo}" placeholder="Filter by badge number...">
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/security-staff}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/security-staff/new" class="btn btn-primary">Add New</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Badge No</th>
+        <th>
+            <a th:href="@{/security-staff(sortField='id', sortDir=${reverseSortDir}, name=${name}, badgeNo=${badgeNo})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/security-staff(sortField='name', sortDir=${reverseSortDir}, name=${name}, badgeNo=${badgeNo})}">Name</a>
+        </th>
+        <th>
+            <a th:href="@{/security-staff(sortField='badgeNo', sortDir=${reverseSortDir}, name=${name}, badgeNo=${badgeNo})}">Badge No</a>
+        </th>
         <th>Salary</th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="staff : ${staffList}">
         <td th:text="${staff.id}"></td>
         <td th:text="${staff.name}"></td>
@@ -20,11 +41,12 @@
             <a th:href="@{'/security-staff/' + ${staff.id}}">Details</a> |
             <a th:href="@{'/security-staff/' + ${staff.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/security-staff/' + ${staff.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

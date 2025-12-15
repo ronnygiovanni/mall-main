@@ -1,5 +1,9 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Floor Form</title></head>
+<head>
+    <title>Floor Form</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1 th:text="${floor.id == null} ? 'Create Floor' : 'Edit Floor'">Floor</h1>
 
@@ -7,21 +11,30 @@
     <span th:text="${error}"></span>
 </div>
 
-<form th:action="@{/floors}" th:object="${floor}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+    <form th:action="@{/floors}" th:object="${floor}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Floor Number:</label>
-    <input type="number" th:field="*{number}" />
-    <span th:if="${#fields.hasErrors('number')}" th:errors="*{number}" style="color:red"></span><br>
+        <div>
+            <label>Floor Number:</label>
+            <input type="number" th:field="*{number}" />
+            <span th:if="${#fields.hasErrors('number')}" th:errors="*{number}" style="color:red"></span>
+        </div>
 
-    <label>Mall ID:</label>
-    <input type="number" name="mallId"
-           th:value="${floor.mall != null ? floor.mall.id : ''}"
-           placeholder="Enter Mall ID" required />
-    <br>
+        <div>
+            <label>Mall:</label>
+            <select name="mallId" required>
+                <option value="">Select a Mall</option>
+                <option th:each="mall : ${malls}"
+                        th:value="${mall.id}"
+                        th:text="${mall.name}"
+                        th:selected="${floor.mall != null and floor.mall.id == mall.id}"></option>
+            </select>
+        </div>
 
-    <button type="submit">Save Floor</button>
-</form>
-<br/><a href="/floors">Back to List</a>
+        <button type="submit" class="btn btn-primary">Save Floor</button>
+    </form>
+</div>
+<br/><a href="/floors" class="back-link">Back to List</a>
 </body>
 </html>

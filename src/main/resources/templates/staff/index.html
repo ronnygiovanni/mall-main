@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Staff List</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Staff List</h1>
+
+    <form th:action="@{/staff}" method="get" class="form-inline mb-3">
+        <input type="text" name="name" th:value="${name}" class="form-control mr-2" placeholder="Filter by Name"/>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th><a th:href="@{/staff(sortBy='id', sortDir=${sortDir})}">ID</a></th>
+            <th><a th:href="@{/staff(sortBy='name', sortDir=${sortDir})}">Name</a></th>
+            <th><a th:href="@{/staff(sortBy='salary', sortDir=${sortDir})}">Salary</a></th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${staff}">
+            <td th:text="${s.id}"></td>
+            <td th:text="${s.name}"></td>
+            <td th:text="${s.salary}"></td>
+            <td>
+                <a th:href="@{/staff/edit/{id}(id=${s.id})}" class="btn btn-sm btn-info">Edit</a>
+                <a th:href="@{/staff/delete/{id}(id=${s.id})}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/staff/new" class="btn btn-success">Add Staff</a>
+</div>
+</body>
+</html>

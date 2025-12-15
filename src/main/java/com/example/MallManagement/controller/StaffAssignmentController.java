@@ -7,6 +7,7 @@ import com.example.MallManagement.repository.StaffRepository;
 import com.example.MallManagement.service.FloorService;
 import com.example.MallManagement.service.StaffAssignmentService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,8 +28,24 @@ public class StaffAssignmentController {
     }
 
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("assignments", service.findAll());
+    public String list(Model model,
+                       @RequestParam(defaultValue = "id") String sortField,
+                       @RequestParam(defaultValue = "asc") String sortDir,
+                       @RequestParam(required = false) StaffAssignment.Shift shift,
+                       @RequestParam(required = false) Long floorId,
+                       @RequestParam(required = false) Long staffId) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+        model.addAttribute("assignments", service.findAll(shift, floorId, staffId, sort));
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("shift", shift);
+        model.addAttribute("floorId", floorId);
+        model.addAttribute("staffId", staffId);
+        model.addAttribute("shifts", StaffAssignment.Shift.values());
+        model.addAttribute("floors", floorService.findAll());
+        model.addAttribute("staffList", staffRepository.findAll());
         return "staff-assignment/index";
     }
 
@@ -42,6 +59,8 @@ public class StaffAssignmentController {
     public String createForm(Model model) {
         model.addAttribute("assignment", new StaffAssignment());
         model.addAttribute("shifts", StaffAssignment.Shift.values());
+        model.addAttribute("floors", floorService.findAll());
+        model.addAttribute("staffList", staffRepository.findAll());
         return "staff-assignment/form";
     }
 
@@ -49,6 +68,8 @@ public class StaffAssignmentController {
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("assignment", service.findById(id));
         model.addAttribute("shifts", StaffAssignment.Shift.values());
+        model.addAttribute("floors", floorService.findAll());
+        model.addAttribute("staffList", staffRepository.findAll());
         return "staff-assignment/form";
     }
 
@@ -59,6 +80,8 @@ public class StaffAssignmentController {
                        @RequestParam("staffId") Long staffId, Model model) {
 
         model.addAttribute("shifts", StaffAssignment.Shift.values()); // Reload dropdowns
+        model.addAttribute("floors", floorService.findAll());
+        model.addAttribute("staffList", staffRepository.findAll());
 
         if (result.hasErrors()) return "staff-assignment/form";
 

@@ -1,5 +1,9 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Asset Form</title></head>
+<head>
+    <title>Asset Form</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1 th:text="${asset.id == null} ? 'New Asset' : 'Edit Asset'">Asset</h1>
 
@@ -7,37 +11,55 @@
     <span th:text="${error}"></span>
 </div>
 
-<form th:action="@{/assets}" th:object="${asset}" method="post">
-    <input type="hidden" th:field="*{id}" />
+<div class="form-container">
+    <form th:action="@{/assets}" th:object="${asset}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-    <label>Type:</label>
-    <select th:field="*{type}">
-        <option value="Lift">Lift</option>
-        <option value="AC">AC</option>
-        <option value="Light">Light</option>
-        <option value="Escalator">Escalator</option>
-    </select><br>
+        <div>
+            <label>Type:</label>
+            <select th:field="*{type}">
+                <option value="Lift">Lift</option>
+                <option value="AC">AC</option>
+                <option value="Light">Light</option>
+                <option value="Escalator">Escalator</option>
+            </select>
+            <span th:if="${#fields.hasErrors('type')}" th:errors="*{type}" style="color:red"></span>
+        </div>
 
-    <label>Status:</label>
-    <select th:field="*{status}">
-        <option value="Working">Working</option>
-        <option value="Down">Down</option>
-    </select><br>
+        <div>
+            <label>Status:</label>
+            <select th:field="*{status}">
+                <option value="Working">Working</option>
+                <option value="Down">Down</option>
+            </select>
+            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" style="color:red"></span>
+        </div>
 
-    <label>Floor ID:</label>
-    <input type="number" name="floorId"
-           th:value="${asset.floor != null ? asset.floor.id : ''}"
-           required />
-    <br>
+        <div>
+            <label>Floor:</label>
+            <select th:field="*{floor}">
+                <option value="">Select a Floor</option>
+                <option th:each="floor : ${floors}"
+                        th:value="${floor.id}"
+                        th:text="'Floor ' + ${floor.number}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('floor')}" th:errors="*{floor}" style="color:red"></span>
+        </div>
 
-    <label>Assignment ID (Optional):</label>
-    <input type="number" name="assignmentId"
-           th:value="${asset.assignment != null ? asset.assignment.id : ''}"
-           placeholder="Optional" />
-    <br>
+        <div>
+            <label>Assignment (Optional):</label>
+            <select name="assignmentId">
+                <option value="">None</option>
+                <option th:each="assignment : ${assignments}"
+                        th:value="${assignment.id}"
+                        th:text="${assignment.id}"
+                        th:selected="${asset.assignment != null and asset.assignment.id == assignment.id}"></option>
+            </select>
+        </div>
 
-    <button type="submit">Save</button>
-</form>
-<br/><a href="/assets">Back to List</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+<br/><a href="/assets" class="back-link">Back to List</a>
 </body>
 </html>

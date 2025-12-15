@@ -1,16 +1,51 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Electrical Assets</title></head>
+<head>
+    <title>Electrical Assets</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Electrical Assets</h1>
-<a href="/assets/new">New Asset</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/assets}" method="get">
+        <select name="type">
+            <option value="">All Types</option>
+            <option th:each="typeOpt : ${types}" th:value="${typeOpt}" th:text="${typeOpt}" th:selected="${typeOpt == type}"></option>
+        </select>
+        <select name="status">
+            <option value="">All Statuses</option>
+            <option th:each="statusOpt : ${statuses}" th:value="${statusOpt}" th:text="${statusOpt}" th:selected="${statusOpt == status}"></option>
+        </select>
+        <select name="floorId">
+            <option value="">All Floors</option>
+            <option th:each="floor : ${floors}" th:value="${floor.id}" th:text="'Floor ' + ${floor.number}" th:selected="${floor.id == floorId}"></option>
+        </select>
+        <select name="assignmentId">
+            <option value="">All Assignments</option>
+            <option th:each="assignment : ${assignments}" th:value="${assignment.id}" th:text="${assignment.id}" th:selected="${assignment.id == assignmentId}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/assets}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/assets/new" class="btn btn-primary">New Asset</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Type</th>
-        <th>Status</th>
+        <th>
+            <a th:href="@{/assets(sortField='id', sortDir=${reverseSortDir}, type=${type}, status=${status}, floorId=${floorId}, assignmentId=${assignmentId})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/assets(sortField='type', sortDir=${reverseSortDir}, type=${type}, status=${status}, floorId=${floorId}, assignmentId=${assignmentId})}">Type</a>
+        </th>
+        <th>
+            <a th:href="@{/assets(sortField='status', sortDir=${reverseSortDir}, type=${type}, status=${status}, floorId=${floorId}, assignmentId=${assignmentId})}">Status</a>
+        </th>
         <th>Floor</th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="asset : ${assets}">
         <td th:text="${asset.id}"></td>
         <td th:text="${asset.type}"></td>
@@ -20,11 +55,12 @@
             <a th:href="@{'/assets/' + ${asset.id}}">Details</a> |
             <a th:href="@{'/assets/' + ${asset.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/assets/' + ${asset.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

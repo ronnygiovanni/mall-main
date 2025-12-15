@@ -1,20 +1,33 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Customer Details</title></head>
+<head>
+    <title>Customer Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Customer Details</h1>
 
-<div th:if="${customer != null}">
+<div th:if="${customer != null}" class="form-container">
     <p><strong>Name:</strong> <span th:text="${customer.name}"></span></p>
-    <p><strong>Currency:</strong> <span th:text="${customer.currency}"></span></p>
 
     <h2>Purchases</h2>
-    <table border="1">
-        <tr><th>ID</th><th>Amount</th><th>Shop</th></tr>
-        <tr th:each="p : ${customer.purchases}">
-            <td th:text="${p.id}"></td>
-            <td th:text="${p.amount}"></td>
-            <td th:text="${p.shop.name}"></td>
-        </tr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Amount</th>
+                <th>Shop</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${customer.purchases}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.amount}"></td>
+                <td>
+                    <a th:href="@{/shops/{id}(id=${p.shop.id})}" th:text="${p.shop.name}"></a>
+                </td>
+            </tr>
+        </tbody>
     </table>
     <p th:if="${#lists.isEmpty(customer.purchases)}">No purchases found.</p>
 </div>
@@ -23,6 +36,6 @@
     <p style="color:red">Error: Customer not found.</p>
 </div>
 
-<br/><a href="/customers">Back to List</a>
+<br/><a href="/customers" class="back-link">Back to List</a>
 </body>
 </html>

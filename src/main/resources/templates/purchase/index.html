@@ -1,16 +1,43 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Purchases</title></head>
+<head>
+    <title>Purchases</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>All Purchases</h1>
-<a href="/purchases/new">New Purchase</a>
-<table border="1">
+<div class="filter-form">
+    <form th:action="@{/purchases}" method="get">
+        <input type="number" step="0.01" name="minAmount" th:value="${minAmount}" placeholder="Min amount...">
+        <input type="number" step="0.01" name="maxAmount" th:value="${maxAmount}" placeholder="Max amount...">
+        <select name="customerId">
+            <option value="">All Customers</option>
+            <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name}" th:selected="${customer.id == customerId}"></option>
+        </select>
+        <select name="shopId">
+            <option value="">All Shops</option>
+            <option th:each="shop : ${shops}" th:value="${shop.id}" th:text="${shop.name}" th:selected="${shop.id == shopId}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        <a th:href="@{/purchases}" class="btn btn-secondary">Clear Filter</a>
+    </form>
+</div>
+<a href="/purchases/new" class="btn btn-primary">New Purchase</a>
+<table>
+    <thead>
     <tr>
-        <th>ID</th>
-        <th>Amount</th>
+        <th>
+            <a th:href="@{/purchases(sortField='id', sortDir=${reverseSortDir}, minAmount=${minAmount}, maxAmount=${maxAmount}, customerId=${customerId}, shopId=${shopId})}">ID</a>
+        </th>
+        <th>
+            <a th:href="@{/purchases(sortField='amount', sortDir=${reverseSortDir}, minAmount=${minAmount}, maxAmount=${maxAmount}, customerId=${customerId}, shopId=${shopId})}">Amount</a>
+        </th>
         <th>Customer</th>
         <th>Shop</th>
         <th>Actions</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="purchase : ${purchases}">
         <td th:text="${purchase.id}"></td>
         <td th:text="${purchase.amount}"></td>
@@ -20,11 +47,12 @@
             <a th:href="@{'/purchases/' + ${purchase.id}}">Details</a> |
             <a th:href="@{'/purchases/' + ${purchase.id} + '/edit'}">Edit</a> |
             <form th:action="@{'/purchases/' + ${purchase.id} + '/delete'}" method="post" style="display:inline">
-                <button type="submit">Delete</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </td>
     </tr>
+    </tbody>
 </table>
-<br/><a href="/">Back to Menu</a>
+<br/><a href="/" class="back-link">Back to Menu</a>
 </body>
 </html>

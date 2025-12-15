@@ -1,9 +1,13 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Task Details</title></head>
+<head>
+    <title>Task Details</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+</head>
 <body>
 <h1>Task Details</h1>
 
-<div th:if="${task != null}">
+<div th:if="${task != null}" class="form-container">
     <p><strong>Description:</strong> <span th:text="${task.description}"></span></p>
     <p><strong>Status:</strong> <span th:text="${task.status}"></span></p>
     <p><strong>Duration:</strong> <span th:text="${task.duration}"></span> mins</p>
@@ -17,6 +21,6 @@
     <p style="color:red">Error: Task not found.</p>
 </div>
 
-<br/><a href="/maintenance">Back to List</a>
+<br/><a href="/maintenance" class="back-link">Back to List</a>
 </body>
 </html>
