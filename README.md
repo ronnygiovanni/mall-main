@@ -17,17 +17,3 @@ A comprehensive web application designed to manage the daily operations, infrast
 * **Frontend:** HTML5, CSS3 
 * **Code Quality:** Qodana integration (`qodana.yaml`)
 
-## Getting Started
-
-### Prerequisites
-
-To build and run this application locally, the following dependencies are required:
-* **Java Development Kit (JDK):** Version 11 or higher (verify the specific version required in your `pom.xml`)
-* **Maven:** The Maven wrapper (`mvnw`) is included in the repository, making a local Maven installation optional.
-
-### Installation and Execution
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/ronnygiovanni/mall-main.git](https://github.com/ronnygiovanni/mall-main.git)
-   cd mall-main
